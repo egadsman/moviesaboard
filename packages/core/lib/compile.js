@@ -55,6 +55,38 @@ function makeAiring(entry, startMs) {
   };
 }
 
+// Refuse defective library entries before compiling anything from them.
+// library.json is a stable boundary (docs/contracts.md section 1) that
+// other components write and self-hosters hand-edit, so every entry is
+// checked up front — a broken entry is invalid input even when nothing
+// currently airs it, and any interstitial/clip may be packed into a gap.
+function validateLibrary(library, problems) {
+  library.forEach((entry, i) => {
+    const named = typeof entry?.slug === "string" && entry.slug.length > 0;
+    const where = named
+      ? `library entry ${JSON.stringify(entry.slug)}`
+      : `library entry ${i}`;
+    if (!named) {
+      problems.push(`${where}: slug must be a non-empty string`);
+    }
+    if (typeof entry?.title !== "string" || entry.title.length === 0) {
+      problems.push(`${where}: title must be a non-empty string`);
+    }
+    if (typeof entry?.hls !== "string" || entry.hls.length === 0) {
+      problems.push(`${where}: hls must be a non-empty string`);
+    }
+    if (!Number.isFinite(entry?.runtime_s) || entry.runtime_s <= 0) {
+      const got =
+        typeof entry?.runtime_s === "string"
+          ? JSON.stringify(entry.runtime_s)
+          : String(entry?.runtime_s);
+      problems.push(
+        `${where}: runtime_s must be a finite number > 0, not ${got}`,
+      );
+    }
+  });
+}
+
 // Resolve one programming channel's days/slots to airings. Malformed
 // dates/times and unknown slugs become problems; their slots are skipped.
 function resolveProgrammingChannel(zone, num, progCh, bySlug, problems) {
@@ -194,6 +226,8 @@ export function compileSchedule({
         `not match CONTRACT_VERSION ${CONTRACT_VERSION}`,
     );
   }
+
+  validateLibrary(library, problems);
 
   const bySlug = new Map();
   for (const entry of library) bySlug.set(entry.slug, entry);
