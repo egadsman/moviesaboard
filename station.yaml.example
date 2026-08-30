@@ -4,7 +4,7 @@
 # station.config.json documented at the top of
 # scripts/station-compile.js. Once support lands this becomes the one
 # file an operator edits: copy to station.yaml (git-ignored) and adjust.
-# Values shown are the documented defaults unless marked otherwise.
+# Values are illustrative examples, not enforced defaults.
 
 station:
   name: "My Station" # shown in the viewer's guide and branding
@@ -29,7 +29,7 @@ voting:
 
 planner:
   replan: "Sun 04:45" # weekly replan, in the station timezone
-  movie_break_minutes: 12
+  movie_break_minutes: 2
   grid_minutes: 15
   ad_break_minutes: 10
 

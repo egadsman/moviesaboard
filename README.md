@@ -77,7 +77,7 @@ it serves static files with the HLS MIME types (`.m3u8` as
 `schedule.json` uncached, and sends a `Date` header — every server does,
 and the viewer's clock sync falls back to it when `/time` is absent.
 Voting needs the tiny API proxied through; without it the vote page
-degrades to "voting offline". nginx is simply the blessed,
+degrades to a voting-offline notice. nginx is simply the blessed,
 batteries-included path: the Docker deployment below uses it, and Phase 2
 renders bare-metal vhosts from `station.yaml`.
 
