@@ -2,8 +2,8 @@
 // compile schedule.json, and atomically publish it. The stationd-less
 // interim for a real deployment (nginx keeps serving everything static);
 // run from a timer — with --check-stale it exits quickly while the
-// published schedule still covers the near future, and replans when the
-// week runs out.
+// published schedule is still the on-air week, and replans on the first
+// tick after a new week begins (or when no schedule is published).
 //
 //   node scripts/station-compile.js --config <station.config.json>
 //        [--check-stale] [--dry-run]
@@ -32,8 +32,6 @@ import {
 } from "@moviesaboard/core";
 import { buildLibraryFromContent } from "./import.js";
 
-const FRESH_MARGIN_MS = 60 * 60 * 1000; // covered this far ahead = fresh
-
 const log = (msg) => console.log(`[station-compile] ${msg}`);
 
 async function writeJsonAtomic(file, data, { compact = false } = {}) {
@@ -61,18 +59,40 @@ function lastEndMs(schedule) {
   return last;
 }
 
+// Earliest airing start, Infinity when there are none. Every planned week
+// opens at Monday 00:00 in the station timezone, so weekStart of this
+// instant identifies the week the schedule was published for.
+function firstStartMs(schedule) {
+  let first = Infinity;
+  for (const ch of schedule?.channels ?? []) {
+    for (const a of ch.airings ?? []) first = Math.min(first, a.start);
+  }
+  return first;
+}
+
 export async function stationCompile({ config, checkStale, dryRun, nowMs }) {
   const zone = config.station.timezone;
   const publicDir = config.paths.public;
   const schedulePath = path.join(publicDir, "schedule.json");
 
   if (checkStale) {
+    // Staleness is week identity, not coverage: replanning the on-air
+    // week would reuse cursors already advanced past it (shifting the
+    // published lineup), and planning the next week early would replace
+    // the file wholesale and orphan the airing on the air. So the replan
+    // deliberately fires on the first tick AFTER Monday 00:00 — the
+    // stored cursors are exactly the state planWeek left for that week,
+    // and an airing that crosses Sunday midnight is cut there (known,
+    // accepted).
     const current = await readJsonOrNull(schedulePath);
-    const covered = lastEndMs(current);
-    if (covered > nowMs + FRESH_MARGIN_MS) {
+    const first = firstStartMs(current);
+    if (
+      Number.isFinite(first) &&
+      weekStart(zone, first) === weekStart(zone, nowMs)
+    ) {
       log(
-        `schedule fresh (covers through ${new Date(covered).toISOString()})` +
-          " — nothing to do",
+        "schedule fresh (current week, covers through " +
+          `${new Date(lastEndMs(current)).toISOString()}) — nothing to do`,
       );
       return { action: "fresh" };
     }

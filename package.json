@@ -14,7 +14,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "demo": "node scripts/demo.js",
-    "test": "npm test --workspaces --if-present"
+    "test": "npm test --workspaces --if-present && node --test scripts/test/*.test.js"
   },
   "dependencies": {
     "hls.js": "^1.6.0"
