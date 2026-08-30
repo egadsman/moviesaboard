@@ -19,7 +19,10 @@ docker compose up
 Open <http://localhost:8080/>. With no content configured, the station
 generates the synthetic demo fixtures on first boot
 (`MOVIESABOARD_DEMO=auto`) and a four-channel train-themed station is on
-the air: guide, player, full schedule, vote page.
+the air: guide, player, full schedule, vote page. The first-boot encode
+runs up to four ffmpeg jobs in parallel, capped at the CPU count on
+small machines; a boot that crashes mid-encode self-heals on restart,
+keeping the finished titles and re-encoding only the rest.
 
 The published ports listen on all interfaces with no authentication —
 anyone who can reach the host can watch and vote. On a trusted LAN that
@@ -40,12 +43,13 @@ localhost only by prefixing the mapping with an address: set
 Both containers mount the same data volume at `/data`:
 
 ```text
-/data/content/<slug>/    encoded HLS titles (frozen layout)
-/data/state/             series cursors, programming
-/data/library.json       import output
-/data/schedule.json      compiled schedule (replaced atomically)
-/data/vendor/hls.min.js  copied from node_modules by station at boot
-/data/certs/             fullchain.pem + privkey.pem when TLS is on
+/data/content/<slug>/      encoded HLS titles (frozen layout)
+/data/state/               series cursors, programming
+/data/library.json         import output
+/data/schedule.json        compiled schedule (replaced atomically)
+/data/vendor/hls.min.js    copied from node_modules by station at boot
+/data/certs/               fullchain.pem + privkey.pem when TLS is on
+/data/station.config.json  operator config, optional (see Configuration)
 ```
 
 The repo's `./web` directory is bind-mounted read-only into the web
@@ -72,8 +76,15 @@ the demo station on port 8080.
 | `MOVIESABOARD_TLS` | `off` | `off`, `self-signed`, or `provided` — see [TLS](#tls). |
 | `STATION_NAME` | `MoviesAboard` | Station name shown in the viewer. |
 | `STATION_TZ` | *(empty)* | Station timezone (e.g. `America/Chicago`); empty uses the container's timezone. |
-| `MOVIESABOARD_DEMO` | `auto` | `auto` generates demo fixtures when `/data/content` is empty; `off` never does. |
+| `MOVIESABOARD_DEMO` | `auto` | `auto` generates demo fixtures when `/data/content` is empty (and repairs them after a crashed encode — never beside real content); `off` never does. |
 | `MOVIESABOARD_REPLAN_MINUTES` | `5` | How often the station checks whether the published schedule has gone stale. |
+
+For anything the environment cannot express, the station also honors an
+optional operator config at `/data/station.config.json` — station name
+and timezone, the channel lineup, planner knobs, paths. Keys in the
+file win; `STATION_NAME` and `STATION_TZ` fill in only what the file
+omits. A file that is not valid JSON stops the boot instead of silently
+airing the wrong station.
 
 ## TLS
 
@@ -108,8 +119,8 @@ MOVIESABOARD_CONTENT=/srv/media/moviesaboard-content
 
 It mounts at `/data/content`, and the station imports it at boot:
 `library.json` is rebuilt from the `meta.json` files with **zero
-re-encoding**. Because the content directory is non-empty, the demo
-fixtures never generate.
+re-encoding**. Because the import finds real titles, the demo fixtures
+never generate.
 
 ## What persists across restarts
 
@@ -128,8 +139,7 @@ vote state (with the rest of the `state/` contract) arrives with
 Every `MOVIESABOARD_REPLAN_MINUTES` (default 5) the station checks
 whether the published schedule has gone stale — running out of planned
 airings. When it has, the planner rewrites the coming week's programming
-(future-dated hand edits survive the rewrite) and the compiler produces
-a fresh `schedule.json`, written atomically. The compiler **refuses**
-invalid schedules — overlaps, unknown slugs, impossible dates — so the
-last-good schedule keeps serving no matter what. There is nothing to
-cron.
+from scratch and the compiler produces a fresh `schedule.json`, written
+atomically. The compiler **refuses** invalid schedules — overlaps,
+unknown slugs, impossible dates — so the last-good schedule keeps
+serving no matter what. There is nothing to cron.

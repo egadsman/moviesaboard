@@ -5,8 +5,9 @@
 //   1. ensure the /data layout (content/, state/, vendor/)
 //   2. MOVIESABOARD_TLS=self-signed: generate certs into /data/certs if
 //      missing (openssl, CN=moviesaboard.local, 3650 days)
-//   3. /data/content empty and MOVIESABOARD_DEMO != off: generate the
-//      demo fixtures (titles already built are skipped)
+//   3. MOVIESABOARD_DEMO != off and /data/content holds nothing beyond
+//      the demo's own dirs, with none usable or some broken: generate
+//      the demo fixtures (built titles skipped, partials re-encoded)
 //   4. copy hls.min.js from node_modules into /data/vendor/
 //   5. config: /data/station.config.json if present (missing keys filled
 //      with defaults), else built from env
@@ -26,7 +27,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
-import { generateFixtures } from "./demo-fixtures.js";
+import { TITLES, generateFixtures } from "./demo-fixtures.js";
+import { buildLibraryFromContent } from "./import.js";
 import { stationCompile } from "./station-compile.js";
 import { startServer } from "./demo-server.js";
 
@@ -128,16 +130,43 @@ async function setupTls() {
 
 /* ---------------- demo fixtures ---------------- */
 
-async function contentIsEmpty(contentDir) {
-  const names = await fs.readdir(contentDir);
-  return names.filter((n) => !n.startsWith(".")).length === 0;
+// Generation may run only when everything in content/ is the demo's
+// own: every entry an empty dir or a dir named by the generator's
+// TITLES list — the only dirs generateFixtures will ever wipe and
+// rebuild. Any stray file or unknown non-empty dir could be an
+// operator's content and blocks generation for good. Within that,
+// generate when the import finds no valid titles (first boot, or pure
+// debris) or when some fixture dir no longer imports (a crashed encode
+// left a partial); a healthy set — even one an operator pruned — is
+// left alone. This is what un-wedges a first boot whose encode pool
+// crashed mid-run: regeneration is idempotent per title, so the next
+// boot re-encodes just the broken dirs and converges.
+async function shouldGenerateDemo(contentDir) {
+  const entries = (await fs.readdir(contentDir, { withFileTypes: true }))
+    .filter((d) => !d.name.startsWith("."));
+  const fixtureSlugs = new Set(TITLES.map((t) => t.slug));
+  for (const d of entries) {
+    if (!d.isDirectory()) return false;
+    if (fixtureSlugs.has(d.name)) continue;
+    const inner = await fs.readdir(path.join(contentDir, d.name));
+    if (inner.length > 0) return false;
+  }
+  const { library } = await buildLibraryFromContent(contentDir);
+  const validSlugs = new Set(library.map((e) => e.slug));
+  return (
+    library.length === 0 ||
+    entries.some((d) => fixtureSlugs.has(d.name) && !validSlugs.has(d.name))
+  );
 }
 
 async function maybeGenerateDemo(contentDir) {
   const mode = env("MOVIESABOARD_DEMO") || "auto";
   if (mode === "off") return;
-  if (!(await contentIsEmpty(contentDir))) return;
-  log("demo: /data/content is empty — generating demo fixtures (ffmpeg)");
+  if (!(await shouldGenerateDemo(contentDir))) return;
+  log(
+    "demo: /data/content needs demo fixtures — generating (ffmpeg; " +
+      "built titles are reused, broken ones re-encoded)",
+  );
   const { built, skipped } = await generateFixtures({ distDir: DATA, log });
   log(
     `demo: fixtures ready (${built.length} encoded, ` +
@@ -251,6 +280,30 @@ async function compileTick(config, { rethrow = false } = {}) {
   }
 }
 
+// startServer's boot warnings were written for the host-side `npm run
+// demo` flow; "run `npm run demo`" is advice no one inside the
+// container can follow, so the known hints are swapped for ones that
+// are true here.
+function serverLog(msg) {
+  if (msg.includes("run `npm run demo` to generate it")) {
+    log(
+      "warning: no library.json yet — the ballot is empty until content " +
+        "imports (MOVIESABOARD_DEMO=auto generates demo fixtures into an " +
+        "empty /data/content on the next boot; or point " +
+        "MOVIESABOARD_CONTENT at real content)",
+    );
+  } else if (msg.includes("Run `npm run demo` to recompile.")) {
+    log(
+      msg.replace(
+        "Run `npm run demo` to recompile.",
+        "The replan timer recompiles it automatically.",
+      ),
+    );
+  } else {
+    log(msg);
+  }
+}
+
 /* ---------------- main ---------------- */
 
 async function main() {
@@ -278,7 +331,7 @@ async function main() {
   const { server, url } = await startServer({
     port: PORT,
     distDir: DATA,
-    log,
+    log: serverLog,
   });
   log(`serving on ${url} (internal — nginx proxies /time and /api/)`);
 

@@ -1,7 +1,9 @@
 // Demo fixture generator: synthetic train-themed HLS titles, encoded with
 // ffmpeg into demo-dist/content/<slug>/ per the frozen on-disk layout in
-// docs/contracts.md (index.m3u8 + seg-*.ts + meta.json). Restart-safe: a
-// title whose meta.json and index.m3u8 already exist is skipped.
+// docs/contracts.md (index.m3u8 + seg-*.ts + meta.json). Restart-safe
+// per title: one whose meta.json and index.m3u8 already exist is
+// skipped; a partial dir (killed before meta.json landed) is wiped and
+// re-encoded. Only dirs named in TITLES are ever touched.
 //
 // Some ffmpeg builds ship without the drawtext filter (no freetype), so the
 // title/slug overlay is rendered here as a BMP title card (tiny embedded
@@ -10,6 +12,7 @@
 
 import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 
 // Found on PATH by default; FFMPEG/FFPROBE env vars override for pinned
@@ -239,9 +242,13 @@ function run(cmd, args, opts = {}) {
           : e,
       );
     });
-    child.on("close", (code) => {
+    child.on("close", (code, signal) => {
       if (code === 0) resolve(out);
-      else reject(new Error(`${cmd} ${args.join(" ")} exited ${code}:\n${err}`));
+      else {
+        // code is null when a signal killed the child; say which one.
+        const how = signal ? `killed by ${signal}` : `exited ${code}`;
+        reject(new Error(`${cmd} ${args.join(" ")} ${how}:\n${err}`));
+      }
     });
   });
 }
@@ -359,7 +366,8 @@ async function isBuilt(distDir, slug) {
 /**
  * Generate every missing fixture into `<distDir>/content/<slug>/`,
  * running up to `concurrency` ffmpeg encodes at once. Titles that are
- * already built (meta.json + index.m3u8 present) are skipped.
+ * already built (meta.json + index.m3u8 present) are skipped; partial
+ * dirs are wiped and re-encoded.
  *
  * @returns {Promise<{built: string[], skipped: string[]}>}
  */
@@ -367,7 +375,9 @@ export async function generateFixtures({
   distDir,
   ffmpeg = DEFAULT_FFMPEG,
   ffprobe = DEFAULT_FFPROBE,
-  concurrency = 4,
+  // Capped by CPU count: on a small VM, 4 parallel ffmpegs can starve
+  // the box hard enough that one dies with SIGSEGV.
+  concurrency = Math.min(4, os.availableParallelism()),
   log = () => {},
 } = {}) {
   const built = [];
