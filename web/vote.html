@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Vote</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/tv.css">
+</head>
+<body>
+  <header class="masthead">
+    <h1 id="station-name">MoviesAboard</h1>
+    <div class="clock" id="clock">--:--:--</div>
+    <nav>
+      <a class="navlink" href="index.html">Watch</a>
+      <a class="navlink" href="schedule.html">Schedule</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="vote-wrap">
+      <div class="vote-status" id="vote-status">Loading the ballot…</div>
+      <div class="ballot" id="ballot"></div>
+      <div class="results" id="results"></div>
+    </div>
+  </main>
+
+  <p class="page-note">The winner airs next on the vote channel.</p>
+
+  <script src="assets/common.js"></script>
+  <script src="assets/vote.js"></script>
+</body>
+</html>

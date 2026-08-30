@@ -1,0 +1,14 @@
+# MoviesAboard weekly replan check (see docs/deploy-station.md).
+# Cheap staleness probe: recompiles the schedule only when the published
+# week is running out. Point MOVIESABOARD_CONFIG at your operator config
+# with a drop-in; set User= and the path to the account that owns the
+# checkout before installing.
+[Unit]
+Description=MOVIESABOARD replan (recompile schedule when the week runs out)
+
+[Service]
+Type=oneshot
+User=station
+Environment=MOVIESABOARD_CONFIG=/srv/moviesaboard/station.config.json
+ExecStart=/usr/bin/env node /home/station/git/moviesaboard/scripts/station-compile.js --config ${MOVIESABOARD_CONFIG} --check-stale
+Nice=10

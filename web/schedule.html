@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Schedule</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/tv.css">
+</head>
+<body>
+  <header class="masthead">
+    <h1 id="station-name">MoviesAboard</h1>
+    <div class="clock" id="clock">--:--:--</div>
+    <nav>
+      <a class="navlink" href="index.html">Watch</a>
+      <a class="navlink" href="vote.html">Vote</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="notice hidden" id="notice"></div>
+    <div class="chan-jump" id="day-tabs"></div>
+    <div class="chan-jump" id="chan-jump"></div>
+    <div id="sched-body"></div>
+  </main>
+
+  <p class="page-note">All times are shown in the station's timezone.</p>
+
+  <script src="assets/common.js"></script>
+  <script src="assets/schedule.js"></script>
+</body>
+</html>

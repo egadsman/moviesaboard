@@ -1,0 +1,20 @@
+{
+  "name": "@moviesaboard/core",
+  "version": "0.0.0",
+  "description": "Pure scheduling core for MoviesAboard: DST-correct time math, week planner, schedule compiler, interstitial packer, vote tally",
+  "license": "AGPL-3.0-or-later",
+  "author": "egadsman",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/egadsman/moviesaboard.git",
+    "directory": "packages/core"
+  },
+  "keywords": ["tv", "linear-tv", "hls", "schedule", "self-hosted"],
+  "engines": { "node": ">=20" },
+  "type": "module",
+  "exports": { ".": "./lib/index.js" },
+  "files": ["lib"],
+  "scripts": {
+    "test": "node --test"
+  }
+}

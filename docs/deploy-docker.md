@@ -1,0 +1,129 @@
+# Docker deployment
+
+The blessed way to run a station: two containers and one shared data
+volume, brought up with a single `docker compose up`. Everything smart
+runs in the station container; stock nginx serves the rest as static
+files.
+
+## Quickstart
+
+Requires Docker with the Compose plugin — no Node, no ffmpeg on your
+machine (the station image carries both).
+
+```sh
+git clone https://github.com/egadsman/moviesaboard.git
+cd moviesaboard
+docker compose up
+```
+
+Open <http://localhost:8080/>. With no content configured, the station
+generates the synthetic demo fixtures on first boot
+(`MOVIESABOARD_DEMO=auto`) and a four-channel train-themed station is on
+the air: guide, player, full schedule, vote page.
+
+## What runs
+
+- **station** — built from the repo Dockerfile. Imports content into
+  `library.json`, plans and compiles the schedule, answers `/time` and
+  `/api/` on an internal port. Never published to the host; only nginx
+  talks to it.
+- **web** — stock `nginx:alpine`. The only thing listening: it serves
+  the viewer, the encoded content, and `schedule.json`, and proxies
+  `/time` and `/api/` to the station.
+
+Both containers mount the same data volume at `/data`:
+
+```text
+/data/content/<slug>/    encoded HLS titles (frozen layout)
+/data/state/             series cursors, programming
+/data/library.json       import output
+/data/schedule.json      compiled schedule (replaced atomically)
+/data/vendor/hls.min.js  copied from node_modules by station at boot
+/data/certs/             fullchain.pem + privkey.pem when TLS is on
+```
+
+The repo's `./web` directory is bind-mounted read-only into the web
+container — the viewer being served is the checkout you are standing
+in, so `git pull` updates it in place.
+
+Caching follows one hard-won rule: viewer HTML, assets, and
+`schedule.json` are served `Cache-Control: no-cache` so deploys and
+replans reach browsers immediately, while the encoded content under
+`/content/` never changes and is cached for a year.
+
+## Configuration
+
+Copy `.env.example` to `.env` and edit; Compose reads it automatically.
+Every variable is optional — `docker compose up` with no `.env` runs
+the demo station on port 8080.
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `MOVIESABOARD_HTTP_PORT` | `8080` | Published HTTP port (maps to web `:80`; always on). |
+| `MOVIESABOARD_HTTPS_PORT` | `8443` | Published HTTPS port (maps to web `:443`; answers only when TLS is on). |
+| `MOVIESABOARD_DATA` | `./station-data` | Host path or named volume mounted at `/data` in both containers. |
+| `MOVIESABOARD_CONTENT` | *(empty)* | Existing frozen-layout content directory to mount at `/data/content` (read-write). Empty keeps content inside `MOVIESABOARD_DATA`. |
+| `MOVIESABOARD_TLS` | `off` | `off`, `self-signed`, or `provided` — see [TLS](#tls). |
+| `STATION_NAME` | `MoviesAboard` | Station name shown in the viewer. |
+| `STATION_TZ` | *(empty)* | Station timezone (e.g. `America/Chicago`); empty uses the container's timezone. |
+| `MOVIESABOARD_DEMO` | `auto` | `auto` generates demo fixtures when `/data/content` is empty; `off` never does. |
+| `MOVIESABOARD_REPLAN_MINUTES` | `5` | How often the station checks whether the published schedule has gone stale. |
+
+## TLS
+
+`MOVIESABOARD_TLS` selects one of three modes:
+
+- **`off`** (default) — plain HTTP on `MOVIESABOARD_HTTP_PORT`. At boot
+  the web container sees no cert pair in `/data/certs/` and drops its
+  443 server, so the HTTPS port simply does not answer.
+- **`self-signed`** — the station generates a certificate pair into
+  `/data/certs/` at boot. Browsers warn on first visit; fine for a LAN,
+  a train car, or anywhere without public DNS.
+- **`provided`** — you drop `fullchain.pem` and `privkey.pem` into
+  `$MOVIESABOARD_DATA/certs/` yourself. This works with certbot (add a
+  deploy hook that copies the renewed pair there) or a Cloudflare
+  origin certificate. Run `docker compose restart web` after replacing
+  the pair.
+
+Real public TLS termination can also live entirely in front of the HTTP
+port — a Cloudflare Tunnel, a Caddy or nginx reverse proxy with its own
+certificates, or a cloud load balancer. Point it at
+`http://your-host:8080` and leave `MOVIESABOARD_TLS=off`.
+
+## Bring your own library
+
+If you already have content in the frozen on-disk layout
+(`content/<slug>/index.m3u8` + `seg-*.ts` + per-title `meta.json` — see
+[contracts.md](contracts.md)), point `MOVIESABOARD_CONTENT` at it:
+
+```sh
+MOVIESABOARD_CONTENT=/srv/media/moviesaboard-content
+```
+
+It mounts at `/data/content`, and the station imports it at boot:
+`library.json` is rebuilt from the `meta.json` files with **zero
+re-encoding**. Because the content directory is non-empty, the demo
+fixtures never generate.
+
+## What persists across restarts
+
+Everything under `/data` (`MOVIESABOARD_DATA`): content, the library,
+`state/` cursors and programming, the compiled schedule, certificates.
+Containers are disposable — `docker compose down`, rebuild, upgrade,
+`up` again, and the station resumes where it was.
+
+Votes do **not** persist. The open ballot and its counts live in the
+station process's memory and reset when the container restarts. Durable
+vote state (with the rest of the `state/` contract) arrives with
+`stationd` in Phase 2.
+
+## How the weekly replan works
+
+Every `MOVIESABOARD_REPLAN_MINUTES` (default 5) the station checks
+whether the published schedule has gone stale — running out of planned
+airings. When it has, the planner rewrites the coming week's programming
+(future-dated hand edits survive the rewrite) and the compiler produces
+a fresh `schedule.json`, written atomically. The compiler **refuses**
+invalid schedules — overlaps, unknown slugs, impossible dates — so the
+last-good schedule keeps serving no matter what. There is nothing to
+cron.

@@ -1,0 +1,101 @@
+[
+  {
+    "slug": "harbor-fog",
+    "title": "Harbor Fog",
+    "kind": "movie",
+    "runtime_s": 6900,
+    "hls": "content/harbor-fog/index.m3u8",
+    "source": "directory:/mnt/media/movies/Harbor Fog (1959).mkv",
+    "encoded_at": "2026-08-01T12:00:00Z",
+    "profile": "720p-crf23"
+  },
+  {
+    "slug": "cape-morning",
+    "title": "Cape Morning",
+    "kind": "movie",
+    "runtime_s": 5400,
+    "hls": "content/cape-morning/index.m3u8",
+    "source": "directory:/mnt/media/movies/Cape Morning (1958).mkv",
+    "encoded_at": "2026-08-01T12:30:00Z",
+    "profile": "720p-crf23"
+  },
+  {
+    "slug": "signal-hill",
+    "title": "Signal Hill",
+    "kind": "movie",
+    "runtime_s": 5160,
+    "hls": "content/signal-hill/index.m3u8",
+    "source": "directory:/mnt/media/movies/Signal Hill (1966).mkv",
+    "encoded_at": "2026-08-02T09:00:00Z",
+    "profile": "720p-crf23"
+  },
+  {
+    "slug": "beach-patrol-01",
+    "title": "Beach Patrol S01E01: Maiden Voyage",
+    "kind": "episode",
+    "series": "beach-patrol",
+    "season": 1,
+    "episode": 1,
+    "runtime_s": 1350,
+    "hls": "content/beach-patrol-01/index.m3u8",
+    "source": "jellyfin:beach-patrol/s01e01",
+    "encoded_at": "2026-08-03T08:00:00Z",
+    "profile": "720p-crf23"
+  },
+  {
+    "slug": "beach-patrol-02",
+    "title": "Beach Patrol S01E02: Man Overboard",
+    "kind": "episode",
+    "series": "beach-patrol",
+    "season": 1,
+    "episode": 2,
+    "runtime_s": 1500,
+    "hls": "content/beach-patrol-02/index.m3u8",
+    "source": "jellyfin:beach-patrol/s01e02",
+    "encoded_at": "2026-08-03T08:20:00Z",
+    "profile": "720p-crf23"
+  },
+  {
+    "slug": "beach-patrol-03",
+    "title": "Beach Patrol S01E03: The Stowaway",
+    "kind": "episode",
+    "series": "beach-patrol",
+    "season": 1,
+    "episode": 3,
+    "runtime_s": 1500,
+    "hls": "content/beach-patrol-03/index.m3u8",
+    "source": "jellyfin:beach-patrol/s01e03",
+    "encoded_at": "2026-08-03T08:40:00Z",
+    "profile": "720p-crf23"
+  },
+  {
+    "slug": "ad-snacks",
+    "title": "Snack Bar Now Open",
+    "kind": "interstitial",
+    "runtime_s": 120,
+    "hls": "content/ad-snacks/index.m3u8",
+    "source": "directory:/mnt/media/ads/snacks.mp4",
+    "encoded_at": "2026-08-04T10:00:00Z",
+    "profile": "720p-crf23"
+  },
+  {
+    "slug": "ad-radio",
+    "title": "Tune Your Radio",
+    "kind": "interstitial",
+    "runtime_s": 90,
+    "hls": "content/ad-radio/index.m3u8",
+    "source": "directory:/mnt/media/ads/radio.mp4",
+    "encoded_at": "2026-08-04T10:05:00Z",
+    "profile": "720p-crf23"
+  },
+  {
+    "slug": "clip-tour",
+    "title": "Ship Tour",
+    "kind": "clip",
+    "runtime_s": 300,
+    "hls": "content/clip-tour/index.m3u8",
+    "source": "directory:/mnt/media/clips/tour.mp4",
+    "encoded_at": "2026-08-04T10:10:00Z",
+    "profile": "720p-crf23"
+  }
+]

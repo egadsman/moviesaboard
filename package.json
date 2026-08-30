@@ -1,0 +1,22 @@
+{
+  "name": "moviesaboard",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Run your own linear TV station from your media library",
+  "license": "AGPL-3.0-or-later",
+  "author": "egadsman",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/egadsman/moviesaboard.git"
+  },
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "demo": "node scripts/demo.js",
+    "test": "npm test --workspaces --if-present"
+  },
+  "dependencies": {
+    "hls.js": "^1.6.0"
+  }
+}

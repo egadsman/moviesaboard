@@ -1,0 +1,49 @@
+# MoviesAboard station configuration — the one file an operator edits.
+# Copy to station.yaml (git-ignored) and adjust. Values shown are the
+# documented defaults unless marked otherwise.
+
+station:
+  name: "My Station" # shown in the viewer's guide and branding
+  timezone: America/Chicago # IANA zone; ALL schedule math uses this
+
+paths:
+  root: /srv/moviesaboard # content/, state/, library.json live here
+
+# Channels are defined by role, not hardcoded personality.
+# Roles: movies | series-grid | marathon | vote
+channels:
+  - { num: 1, name: "Movies", role: movies }
+  - { num: 2, name: "Series", role: series-grid }
+  - { num: 3, name: "Marathon", role: marathon }
+  - { num: 5, name: "Requests", role: vote }
+
+voting:
+  mode: continuous # continuous | grid
+  window_minutes: 15 # first vote arms this countdown (continuous mode)
+  grid: ["09:00", "11:30", "14:00", "16:30", "19:00"] # grid-mode slots
+  bench_size: 12 # titles held out each week for the ballot
+
+planner:
+  replan: "Sun 04:45" # weekly replan, in the station timezone
+  movie_break_minutes: 12
+  grid_minutes: 15
+  ad_break_minutes: 10
+
+sources:
+  - { type: directory, path: /mnt/media/movies }
+  # - { type: jellyfin, url: "https://jellyfin.local",
+  #     api_key_env: JELLYFIN_KEY }
+
+encoder:
+  profile:
+    height: 720
+    crf: 23
+    maxrate: "2M"
+    audio: aac128-stereo
+    segment_s: 4
+  ship: { target: local } # local | { host, path, bwlimit } for remote
+
+server:
+  domain: tv.example.com
+  trusted_proxies: [] # e.g. ["127.0.0.1"] + real-IP header, behind tunnels
+  auth: { basic: false } # or { basic: true, htpasswd: state/htpasswd }

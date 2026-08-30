@@ -1,0 +1,11 @@
+{
+  "station": {
+    "name": "SS Fixture",
+    "timezone": "America/Chicago"
+  },
+  "channels": [
+    { "num": 1, "name": "Movies", "role": "movies" },
+    { "num": 2, "name": "Series", "role": "series-grid" },
+    { "num": 5, "name": "Requests", "role": "vote" }
+  ]
+}

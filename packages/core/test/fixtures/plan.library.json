@@ -1,0 +1,111 @@
+[
+  {
+    "slug": "depot-nocturne",
+    "title": "Depot Nocturne",
+    "kind": "movie",
+    "runtime_s": 7500,
+    "artwork": "content/depot-nocturne/poster.jpg",
+    "hls": "content/depot-nocturne/index.m3u8",
+    "source": "scan",
+    "encoded_at": "2026-08-20T12:00:00Z",
+    "profile": "720p"
+  },
+  {
+    "slug": "the-big-heist",
+    "title": "The Big Heist",
+    "kind": "movie",
+    "runtime_s": 6000,
+    "hls": "content/the-big-heist/index.m3u8",
+    "source": "jellyfin",
+    "encoded_at": "2026-08-20T13:00:00Z",
+    "profile": "720p"
+  },
+  {
+    "slug": "night-shift-01",
+    "title": "Night Shift: Pilot",
+    "kind": "episode",
+    "series": "night-shift",
+    "season": 1,
+    "episode": 1,
+    "runtime_s": 2400,
+    "hls": "content/night-shift-01/index.m3u8",
+    "source": "scan",
+    "encoded_at": "2026-08-21T09:00:00Z",
+    "profile": "720p"
+  },
+  {
+    "slug": "night-shift-02",
+    "title": "Night Shift: Graveyard",
+    "kind": "episode",
+    "series": "night-shift",
+    "season": 1,
+    "episode": 2,
+    "runtime_s": 2700,
+    "hls": "content/night-shift-02/index.m3u8",
+    "source": "scan",
+    "encoded_at": "2026-08-21T09:30:00Z",
+    "profile": "720p"
+  },
+  {
+    "slug": "night-shift-03",
+    "title": "Night Shift: Sunrise",
+    "kind": "episode",
+    "series": "night-shift",
+    "season": 1,
+    "episode": 3,
+    "runtime_s": 2400,
+    "hls": "content/night-shift-03/index.m3u8",
+    "source": "scan",
+    "encoded_at": "2026-08-21T10:00:00Z",
+    "profile": "720p"
+  },
+  {
+    "slug": "paper-trail-01",
+    "title": "Paper Trail: The Memo",
+    "kind": "episode",
+    "series": "paper-trail",
+    "season": 1,
+    "episode": 1,
+    "runtime_s": 2700,
+    "hls": "content/paper-trail-01/index.m3u8",
+    "source": "jellyfin",
+    "encoded_at": "2026-08-22T09:00:00Z",
+    "profile": "720p"
+  },
+  {
+    "slug": "paper-trail-02",
+    "title": "Paper Trail: Double Feature",
+    "kind": "episode",
+    "series": "paper-trail",
+    "season": 1,
+    "episode": 2,
+    "runtime_s": 4200,
+    "hls": "content/paper-trail-02/index.m3u8",
+    "source": "jellyfin",
+    "encoded_at": "2026-08-22T09:30:00Z",
+    "profile": "720p"
+  },
+  {
+    "slug": "paper-trail-03",
+    "title": "Paper Trail: Shredded",
+    "kind": "episode",
+    "series": "paper-trail",
+    "season": 1,
+    "episode": 3,
+    "runtime_s": 3000,
+    "hls": "content/paper-trail-03/index.m3u8",
+    "source": "jellyfin",
+    "encoded_at": "2026-08-22T10:00:00Z",
+    "profile": "720p"
+  },
+  {
+    "slug": "ad-cola",
+    "title": "Cola Spot",
+    "kind": "interstitial",
+    "runtime_s": 30,
+    "hls": "content/ad-cola/index.m3u8",
+    "source": "scan",
+    "encoded_at": "2026-08-19T08:00:00Z",
+    "profile": "720p"
+  }
+]

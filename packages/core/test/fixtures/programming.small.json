@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "week_start": "2026-08-24",
+  "channels": [
+    {
+      "num": 1,
+      "role": "movies",
+      "days": [
+        {
+          "date": "2026-08-24",
+          "slots": [
+            { "at": "20:00", "slug": "harbor-fog" },
+            { "at": "22:00", "slug": "cape-morning" }
+          ]
+        }
+      ]
+    },
+    {
+      "num": 2,
+      "role": "series-grid",
+      "days": [
+        {
+          "date": "2026-08-25",
+          "slots": [
+            { "at": "18:00", "slug": "beach-patrol-01" },
+            { "at": "18:30", "slug": "beach-patrol-02" },
+            { "at": "20:00", "slug": "beach-patrol-03" }
+          ]
+        }
+      ]
+    }
+  ]
+}

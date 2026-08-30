@@ -1,0 +1,203 @@
+{
+  "generated": 1787565600000,
+  "station": {
+    "name": "SS Fixture",
+    "timezone": "America/Chicago"
+  },
+  "channels": [
+    {
+      "num": 1,
+      "name": "Movies",
+      "airings": [
+        {
+          "slug": "harbor-fog",
+          "title": "Harbor Fog",
+          "start": 1787619600000,
+          "end": 1787626500000,
+          "live": false,
+          "src": "content/harbor-fog/index.m3u8"
+        },
+        {
+          "slug": "ad-radio",
+          "title": "Tune Your Radio",
+          "start": 1787626500000,
+          "end": 1787626590000,
+          "live": false,
+          "src": "content/ad-radio/index.m3u8"
+        },
+        {
+          "slug": "ad-snacks",
+          "title": "Snack Bar Now Open",
+          "start": 1787626590000,
+          "end": 1787626710000,
+          "live": false,
+          "src": "content/ad-snacks/index.m3u8"
+        },
+        {
+          "slug": "ad-radio",
+          "title": "Tune Your Radio",
+          "start": 1787626710000,
+          "end": 1787626800000,
+          "live": false,
+          "src": "content/ad-radio/index.m3u8"
+        },
+        {
+          "slug": "cape-morning",
+          "title": "Cape Morning",
+          "start": 1787626800000,
+          "end": 1787632200000,
+          "live": false,
+          "src": "content/cape-morning/index.m3u8"
+        }
+      ]
+    },
+    {
+      "num": 2,
+      "name": "Series",
+      "airings": [
+        {
+          "slug": "beach-patrol-01",
+          "title": "Beach Patrol S01E01: Maiden Voyage",
+          "start": 1787698800000,
+          "end": 1787700150000,
+          "live": false,
+          "src": "content/beach-patrol-01/index.m3u8"
+        },
+        {
+          "slug": "clip-tour",
+          "title": "Ship Tour",
+          "start": 1787700150000,
+          "end": 1787700450000,
+          "live": false,
+          "src": "content/clip-tour/index.m3u8"
+        },
+        {
+          "slug": "ad-radio",
+          "title": "Tune Your Radio",
+          "start": 1787700450000,
+          "end": 1787700540000,
+          "live": false,
+          "src": "content/ad-radio/index.m3u8"
+        },
+        {
+          "slug": "beach-patrol-02",
+          "title": "Beach Patrol S01E02: Man Overboard",
+          "start": 1787700600000,
+          "end": 1787702100000,
+          "live": false,
+          "src": "content/beach-patrol-02/index.m3u8"
+        },
+        {
+          "slug": "beach-patrol-03",
+          "title": "Beach Patrol S01E03: The Stowaway",
+          "start": 1787706000000,
+          "end": 1787707500000,
+          "live": false,
+          "src": "content/beach-patrol-03/index.m3u8"
+        }
+      ]
+    },
+    {
+      "num": 5,
+      "name": "Requests",
+      "airings": [
+        {
+          "slug": "signal-hill",
+          "title": "Signal Hill",
+          "start": 1787788800000,
+          "end": 1787793960000,
+          "live": false,
+          "src": "content/signal-hill/index.m3u8"
+        },
+        {
+          "slug": "clip-tour",
+          "title": "Ship Tour",
+          "start": 1787793960000,
+          "end": 1787794260000,
+          "live": false,
+          "src": "content/clip-tour/index.m3u8"
+        },
+        {
+          "slug": "ad-snacks",
+          "title": "Snack Bar Now Open",
+          "start": 1787794260000,
+          "end": 1787794380000,
+          "live": false,
+          "src": "content/ad-snacks/index.m3u8"
+        },
+        {
+          "slug": "clip-tour",
+          "title": "Ship Tour",
+          "start": 1787794380000,
+          "end": 1787794680000,
+          "live": false,
+          "src": "content/clip-tour/index.m3u8"
+        },
+        {
+          "slug": "ad-radio",
+          "title": "Tune Your Radio",
+          "start": 1787794680000,
+          "end": 1787794770000,
+          "live": false,
+          "src": "content/ad-radio/index.m3u8"
+        },
+        {
+          "slug": "clip-tour",
+          "title": "Ship Tour",
+          "start": 1787794770000,
+          "end": 1787795070000,
+          "live": false,
+          "src": "content/clip-tour/index.m3u8"
+        },
+        {
+          "slug": "ad-radio",
+          "title": "Tune Your Radio",
+          "start": 1787795070000,
+          "end": 1787795160000,
+          "live": false,
+          "src": "content/ad-radio/index.m3u8"
+        },
+        {
+          "slug": "ad-snacks",
+          "title": "Snack Bar Now Open",
+          "start": 1787795160000,
+          "end": 1787795280000,
+          "live": false,
+          "src": "content/ad-snacks/index.m3u8"
+        },
+        {
+          "slug": "ad-radio",
+          "title": "Tune Your Radio",
+          "start": 1787795280000,
+          "end": 1787795370000,
+          "live": false,
+          "src": "content/ad-radio/index.m3u8"
+        },
+        {
+          "slug": "clip-tour",
+          "title": "Ship Tour",
+          "start": 1787795370000,
+          "end": 1787795670000,
+          "live": false,
+          "src": "content/clip-tour/index.m3u8"
+        },
+        {
+          "slug": "ad-radio",
+          "title": "Tune Your Radio",
+          "start": 1787795670000,
+          "end": 1787795760000,
+          "live": false,
+          "src": "content/ad-radio/index.m3u8"
+        },
+        {
+          "slug": "cape-morning",
+          "title": "Cape Morning",
+          "start": 1787795760000,
+          "end": 1787801160000,
+          "live": false,
+          "src": "content/cape-morning/index.m3u8"
+        }
+      ]
+    }
+  ]
+}

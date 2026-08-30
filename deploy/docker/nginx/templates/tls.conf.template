@@ -1,0 +1,78 @@
+# MoviesAboard — HTTPS server (container port 443).
+#
+# Rendered to /etc/nginx/conf.d/tls.conf by the nginx image's envsubst
+# step, then DELETED by 30-tls-toggle.sh when /data/certs/ holds no cert
+# pair — so this server only exists when TLS is actually configured
+# (MOVIESABOARD_TLS=self-signed or provided; see docs/deploy-docker.md).
+#
+# NOTE: same server as default.conf.template plus ssl. Keep the two
+# location sets in sync when editing either file.
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name _;
+
+    ssl_certificate     /data/certs/fullchain.pem;
+    ssl_certificate_key /data/certs/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_cache   shared:moviesaboard:1m;
+    ssl_session_timeout 1h;
+
+    root /var/www/moviesaboard;
+    index index.html;
+
+    # Viewer HTML + assets (the repo ./web dir, bind-mounted read-only).
+    # no-cache is load-bearing: without it, deploys leave stale browsers.
+    location / {
+        try_files $uri $uri/ =404;
+        add_header Cache-Control "no-cache";
+    }
+
+    # Encoded HLS titles (frozen layout: index.m3u8 + seg-*.ts +
+    # meta.json per slug). Immutable once written — cache forever.
+    location /content/ {
+        alias /data/content/;
+        types {
+            application/vnd.apple.mpegurl m3u8;
+            video/mp2t                    ts;
+            application/json              json;
+            image/jpeg                    jpg jpeg;
+            image/png                     png;
+            image/webp                    webp;
+        }
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    # Compiled schedule: polled by every viewer, replaced atomically by
+    # the station. Never cached.
+    location = /schedule.json {
+        alias /data/schedule.json;
+        add_header Cache-Control "no-cache";
+        gzip on;
+        gzip_types application/json;
+    }
+
+    # hls.min.js, copied out of node_modules by the station at boot.
+    location /vendor/ {
+        alias /data/vendor/;
+        add_header Cache-Control "no-cache";
+    }
+
+    # Server clock and the tiny station API, proxied to the station
+    # container (internal-only, never published).
+    location = /time {
+        proxy_pass http://station:4321;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/ {
+        proxy_pass http://station:4321;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

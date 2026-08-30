@@ -1,0 +1,7 @@
+.git
+node_modules
+demo-dist
+station-data
+.env
+.DS_Store
+*.log

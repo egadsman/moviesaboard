@@ -1,0 +1,19 @@
+# MoviesAboard manual update cycle (see scripts/station/autodeploy.sh
+# and docs/deploy-station.md). No timer on purpose: run it when you want
+# the host to pick up commits —
+#   sudo systemctl start moviesaboard-autodeploy
+# Install:
+#   sudo cp deploy/station/moviesaboard-autodeploy.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+[Unit]
+Description=MOVIESABOARD update cycle (fetch, test, deploy, log locally)
+
+[Service]
+Type=oneshot
+# Set User= and the ExecStart path to the account that owns the station
+# checkout on your host before installing. Host-specific settings
+# (MOVIESABOARD_CONFIG, MOVIESABOARD_LOG) belong in a systemd drop-in.
+User=station
+ExecStart=/home/station/git/moviesaboard/scripts/station/autodeploy.sh
+TimeoutStartSec=15min
+Nice=10

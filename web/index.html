@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>MoviesAboard</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/tv.css">
+</head>
+<body>
+  <header class="masthead">
+    <h1 id="station-name">MoviesAboard</h1>
+    <div class="clock" id="clock">--:--:--</div>
+    <nav>
+      <a class="navlink" href="schedule.html">Schedule</a>
+      <a class="navlink" href="vote.html">Vote</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="notice hidden" id="notice"></div>
+
+    <section class="player-wrap" id="player-wrap">
+      <video id="tv" muted playsinline></video>
+
+      <div class="offair hidden" id="offair">
+        <div class="offair-ch" id="offair-ch"></div>
+        <div class="offair-title" id="offair-title">Off Air</div>
+        <div class="offair-next" id="offair-next"></div>
+      </div>
+
+      <div class="osd-banner hidden" id="banner">
+        <div class="osd-num" id="osd-num"></div>
+        <div class="osd-meta">
+          <div class="osd-ch-name" id="osd-ch-name"></div>
+          <div class="osd-title" id="osd-title"></div>
+          <div class="osd-time" id="osd-time"></div>
+        </div>
+      </div>
+
+      <div class="osd-digits hidden" id="digits"></div>
+
+      <button type="button" class="tap-overlay" id="unmute">
+        TAP FOR SOUND</button>
+      <button type="button" class="tap-overlay hidden" id="tapplay">
+        TAP TO WATCH</button>
+
+      <div class="player-controls">
+        <button type="button" class="ctl-btn" id="mute-btn"
+          aria-label="Toggle mute">UNMUTE</button>
+        <input type="range" id="vol" min="0" max="1" step="0.05"
+          value="1" aria-label="Volume">
+        <button type="button" class="ctl-btn" id="fs-btn"
+          aria-label="Toggle fullscreen">FULL</button>
+      </div>
+    </section>
+
+    <section class="guide">
+      <div class="guide-head">
+        <h2>Channel Guide</h2>
+        <span class="hint">type a channel number · arrows surf ·
+          M mute · F fullscreen</span>
+      </div>
+      <div id="guide-rows"></div>
+    </section>
+  </main>
+
+  <p class="page-note">You are watching live linear TV — programs join
+    in progress, just like the real thing.</p>
+
+  <script src="vendor/hls.min.js"></script>
+  <script src="assets/common.js"></script>
+  <script src="assets/player.js"></script>
+</body>
+</html>

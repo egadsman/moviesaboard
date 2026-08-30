@@ -1,0 +1,1903 @@
+{
+  "programming": {
+    "version": 1,
+    "week_start": "2026-08-24",
+    "channels": [
+      {
+        "num": 1,
+        "role": "movies",
+        "days": [
+          {
+            "date": "2026-08-24",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "02:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "04:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "06:35",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "08:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "10:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "12:45",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "15:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "17:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "19:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "21:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "23:35",
+                "slug": "the-big-heist"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-25",
+            "slots": [
+              {
+                "at": "01:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "03:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "05:45",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "08:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "10:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "12:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "14:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "16:35",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "18:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "20:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "22:45",
+                "slug": "depot-nocturne"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-26",
+            "slots": [
+              {
+                "at": "01:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "03:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "05:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "07:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "09:35",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "11:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "13:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "15:45",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "18:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "20:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "22:20",
+                "slug": "the-big-heist"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-27",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "02:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "04:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "06:35",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "08:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "10:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "12:45",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "15:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "17:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "19:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "21:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "23:35",
+                "slug": "the-big-heist"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-28",
+            "slots": [
+              {
+                "at": "01:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "03:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "05:45",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "08:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "10:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "12:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "14:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "16:35",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "18:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "20:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "22:45",
+                "slug": "depot-nocturne"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-29",
+            "slots": [
+              {
+                "at": "01:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "03:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "05:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "07:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "09:35",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "11:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "13:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "15:45",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "18:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "20:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "22:20",
+                "slug": "the-big-heist"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-30",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "02:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "04:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "06:35",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "08:30",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "10:50",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "12:45",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "15:05",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "17:00",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "19:20",
+                "slug": "the-big-heist"
+              },
+              {
+                "at": "21:15",
+                "slug": "depot-nocturne"
+              },
+              {
+                "at": "23:35",
+                "slug": "the-big-heist"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "num": 2,
+        "role": "series-grid",
+        "days": [
+          {
+            "date": "2026-08-24",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "01:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "02:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "03:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "05:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "06:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "07:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "08:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "09:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "10:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "12:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "13:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "14:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "15:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "16:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "17:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "19:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "20:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "21:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "22:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "23:00",
+                "slug": "night-shift-02"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-25",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "02:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "03:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "04:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "05:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "06:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "07:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "09:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "10:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "11:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "12:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "13:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "14:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "16:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "17:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "18:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "19:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "20:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "21:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "23:00",
+                "slug": "night-shift-03"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-26",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "01:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "02:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "03:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "04:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "06:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "07:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "08:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "09:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "10:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "11:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "13:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "14:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "15:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "16:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "17:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "18:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "20:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "21:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "22:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "23:00",
+                "slug": "paper-trail-01"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-27",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "01:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "03:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "04:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "05:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "06:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "07:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "08:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "10:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "11:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "12:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "13:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "14:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "15:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "17:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "18:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "19:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "20:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "21:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "22:00",
+                "slug": "paper-trail-02"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-28",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "01:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "02:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "03:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "04:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "05:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "07:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "08:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "09:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "10:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "11:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "12:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "14:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "15:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "16:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "17:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "18:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "19:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "21:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "22:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "23:00",
+                "slug": "night-shift-01"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-29",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "01:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "02:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "04:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "05:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "06:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "07:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "08:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "09:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "11:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "12:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "13:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "14:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "15:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "16:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "18:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "19:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "20:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "21:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "22:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "23:00",
+                "slug": "paper-trail-02"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-30",
+            "slots": [
+              {
+                "at": "01:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "02:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "03:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "04:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "05:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "06:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "08:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "09:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "10:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "11:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "12:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "13:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "15:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "16:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "17:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "18:00",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "19:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "20:00",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "22:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "23:00",
+                "slug": "paper-trail-03"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "num": 3,
+        "role": "marathon",
+        "days": [
+          {
+            "date": "2026-08-24",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "00:40",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "01:25",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "02:05",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "02:45",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "03:30",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "04:10",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "04:50",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "05:35",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "06:15",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "06:55",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "07:40",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "08:20",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "09:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "09:45",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "10:25",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "11:05",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "11:50",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "12:30",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "13:10",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "13:55",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "14:35",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "15:15",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "16:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "16:40",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "17:20",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "18:05",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "18:45",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "19:25",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "20:10",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "20:50",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "21:30",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "22:15",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "22:55",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "23:35",
+                "slug": "night-shift-02"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-25",
+            "slots": [
+              {
+                "at": "00:20",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "01:05",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "02:15",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "03:05",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "03:50",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "05:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "05:50",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "06:35",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "07:45",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "08:35",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "09:20",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "10:30",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "11:20",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "12:05",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "13:15",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "14:05",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "14:50",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "16:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "16:50",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "17:35",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "18:45",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "19:35",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "20:20",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "21:30",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "22:20",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "23:05",
+                "slug": "paper-trail-02"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-26",
+            "slots": [
+              {
+                "at": "00:15",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "00:55",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "01:40",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "02:20",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "03:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "03:45",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "04:25",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "05:05",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "05:50",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "06:30",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "07:10",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "07:55",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "08:35",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "09:15",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "10:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "10:40",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "11:20",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "12:05",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "12:45",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "13:25",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "14:10",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "14:50",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "15:30",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "16:15",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "16:55",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "17:35",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "18:20",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "19:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "19:40",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "20:25",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "21:05",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "21:45",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "22:30",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "23:10",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "23:50",
+                "slug": "night-shift-02"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-27",
+            "slots": [
+              {
+                "at": "00:35",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "01:20",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "02:30",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "03:20",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "04:05",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "05:15",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "06:05",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "06:50",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "08:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "08:50",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "09:35",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "10:45",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "11:35",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "12:20",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "13:30",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "14:20",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "15:05",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "16:15",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "17:05",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "17:50",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "19:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "19:50",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "20:35",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "21:45",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "22:35",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "23:20",
+                "slug": "paper-trail-02"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-28",
+            "slots": [
+              {
+                "at": "00:30",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "01:10",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "01:55",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "02:35",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "03:15",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "04:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "04:40",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "05:20",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "06:05",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "06:45",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "07:25",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "08:10",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "08:50",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "09:30",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "10:15",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "10:55",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "11:35",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "12:20",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "13:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "13:40",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "14:25",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "15:05",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "15:45",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "16:30",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "17:10",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "17:50",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "18:35",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "19:15",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "19:55",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "20:40",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "21:20",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "22:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "22:45",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "23:25",
+                "slug": "night-shift-01"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-29",
+            "slots": [
+              {
+                "at": "00:05",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "00:50",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "02:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "02:50",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "03:35",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "04:45",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "05:35",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "06:20",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "07:30",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "08:20",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "09:05",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "10:15",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "11:05",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "11:50",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "13:00",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "13:50",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "14:35",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "15:45",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "16:35",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "17:20",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "18:30",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "19:20",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "20:05",
+                "slug": "paper-trail-02"
+              },
+              {
+                "at": "21:15",
+                "slug": "paper-trail-03"
+              },
+              {
+                "at": "22:05",
+                "slug": "paper-trail-01"
+              },
+              {
+                "at": "22:50",
+                "slug": "paper-trail-02"
+              }
+            ]
+          },
+          {
+            "date": "2026-08-30",
+            "slots": [
+              {
+                "at": "00:00",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "00:40",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "01:25",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "02:05",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "02:45",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "03:30",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "04:10",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "04:50",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "05:35",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "06:15",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "06:55",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "07:40",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "08:20",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "09:00",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "09:45",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "10:25",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "11:05",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "11:50",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "12:30",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "13:10",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "13:55",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "14:35",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "15:15",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "16:00",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "16:40",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "17:20",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "18:05",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "18:45",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "19:25",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "20:10",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "20:50",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "21:30",
+                "slug": "night-shift-02"
+              },
+              {
+                "at": "22:15",
+                "slug": "night-shift-03"
+              },
+              {
+                "at": "22:55",
+                "slug": "night-shift-01"
+              },
+              {
+                "at": "23:35",
+                "slug": "night-shift-02"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cursors": {
+    "movies_index": 0,
+    "marathon_index": 1,
+    "series": {
+      "night-shift": 0,
+      "paper-trail": 0
+    }
+  }
+}

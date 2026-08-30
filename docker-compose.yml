@@ -1,0 +1,73 @@
+# MoviesAboard in two containers:
+#
+#   station  node + ffmpeg; boots /data (demo fixtures, TLS certs,
+#            vendor, library/schedule compile) and serves the tiny API
+#            on :4321 — INTERNAL ONLY, never published.
+#   web      stock nginx:alpine; serves the viewer pages (repo ./web,
+#            read-only), the static side of /data (content, schedule,
+#            vendor, certs), and proxies /time + /api/ to station.
+#
+# Every setting has a default: plain `docker compose up` airs the demo
+# station on http://localhost:8080. Copy .env.example to .env to change
+# anything. All host state lives in bind mounts (inspectable with plain
+# ls) under MOVIESABOARD_DATA, default ./station-data.
+#
+# MOVIESABOARD_CONTENT: compose cannot mount conditionally, so an
+# existing frozen-layout content library is supported by making the
+# content bind source a variable whose default is the content/ dir
+# inside MOVIESABOARD_DATA — leaving it unset changes nothing, setting
+# it overlays that directory (read-write) at /data/content in both
+# containers.
+
+name: moviesaboard
+
+services:
+  station:
+    build: .
+    restart: unless-stopped
+    init: true # reap ffmpeg children promptly
+    expose:
+      - "4321"
+    environment:
+      STATION_NAME: ${STATION_NAME:-MoviesAboard}
+      STATION_TZ: ${STATION_TZ:-}
+      MOVIESABOARD_TLS: ${MOVIESABOARD_TLS:-off}
+      MOVIESABOARD_DEMO: ${MOVIESABOARD_DEMO:-auto}
+      MOVIESABOARD_REPLAN_MINUTES: ${MOVIESABOARD_REPLAN_MINUTES:-5}
+    volumes:
+      - ${MOVIESABOARD_DATA:-./station-data}:/data
+      - ${MOVIESABOARD_CONTENT:-${MOVIESABOARD_DATA:-./station-data}/content}:/data/content
+    healthcheck:
+      # busybox wget ships in node:alpine; /time answers once the boot
+      # sequence (which may include first-run demo encoding) finishes.
+      test: ["CMD", "wget", "-q", "-T", "3", "-O", "/dev/null", "http://127.0.0.1:4321/time"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10m
+
+  web:
+    image: nginx:alpine
+    restart: unless-stopped
+    depends_on:
+      - station
+    environment:
+      # Lets the TLS toggle know certs are expected (it waits for the
+      # station to generate them on a cold self-signed boot).
+      MOVIESABOARD_TLS: ${MOVIESABOARD_TLS:-off}
+    ports:
+      # HTTP is always on; the HTTPS port only answers when a cert pair
+      # exists in /data/certs (see the TLS toggle mount below).
+      - "${MOVIESABOARD_HTTP_PORT:-8080}:80"
+      - "${MOVIESABOARD_HTTPS_PORT:-8443}:443"
+    volumes:
+      - ${MOVIESABOARD_DATA:-./station-data}:/data:ro
+      - ${MOVIESABOARD_CONTENT:-${MOVIESABOARD_DATA:-./station-data}/content}:/data/content:ro
+      # Viewer pages, straight from the repo checkout.
+      - ./web:/var/www/moviesaboard:ro
+      # nginx config: the stock image renders *.conf.template from
+      # /etc/nginx/templates into /etc/nginx/conf.d at startup, then the
+      # TLS toggle removes the rendered 443 server when /data/certs
+      # holds no cert pair — one config, both TLS states.
+      - ./deploy/docker/nginx/templates:/etc/nginx/templates:ro
+      - ./deploy/docker/nginx/30-tls-toggle.sh:/docker-entrypoint.d/30-tls-toggle.sh:ro
