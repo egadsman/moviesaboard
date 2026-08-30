@@ -6,11 +6,16 @@
 #
 #   1. fetch origin/main (offline is fine — skip to the staleness check)
 #   2. on new commits: reset --hard, re-exec the new script once,
-#      npm ci, npm test — a failing suite blocks the deploy and the
-#      last-good station keeps airing
+#      npm ci, npm test — a failing suite blocks the deploy AND puts
+#      the checkout back on the last-good sha (with its node_modules),
+#      so the replan timer never compiles from an untested tree
 #   3. deploy: sync web/ + hls.js into the public dir, then
 #      station-compile (forced on new commits, --check-stale otherwise)
 #   4. log one JSON line locally (deployed / test-failed / fresh ...)
+#
+# Rollback: pin HEAD by hand (git reset --hard <old-sha>), then run
+# with MOVIESABOARD_PREV_SHA=rollback — that skips the fetch and the
+# reset to origin/main and tests + deploys the pinned HEAD itself.
 #
 # The weekly replan runs separately from moviesaboard-replan.timer;
 # run THIS script by hand (or via `systemctl start
@@ -40,22 +45,37 @@ PUBLIC_DIR="$(CONFIG="$CONFIG" node -e \
   'console.log(JSON.parse(require("fs").readFileSync(process.env.CONFIG,"utf8")).paths.public)')"
 
 old_sha="$(git rev-parse HEAD)"
-# After a self-update re-exec, HEAD is already the new sha — the pre-update
-# sha rides through the environment so the deploy steps still run.
-old_sha="${MOVIESABOARD_PREV_SHA:-$old_sha}"
+rollback=0
+if [ "${MOVIESABOARD_PREV_SHA:-}" = "rollback" ]; then
+  # Rollback mode: the operator pinned HEAD by hand — deploy exactly
+  # that. No fetch, no reset to origin/main, no re-exec; the test
+  # suite still gates the deploy.
+  rollback=1
+elif [ -n "${MOVIESABOARD_PREV_SHA:-}" ]; then
+  # After a self-update re-exec, HEAD is already the new sha — the
+  # pre-update sha rides through the environment so the deploy steps
+  # still run (and the checkout can be restored if they fail).
+  old_sha="$MOVIESABOARD_PREV_SHA"
+fi
+
 offline=0
-git fetch --quiet origin main || offline=1
-new_sha="$(git rev-parse origin/main)"
+if [ "$rollback" = 1 ]; then
+  new_sha="$old_sha"
+else
+  git fetch --quiet origin main || offline=1
+  new_sha="$(git rev-parse origin/main)"
+fi
 
 action="fresh"
 tests="skipped"
 error=""
+restored=""
 
 if [ "$offline" = 1 ]; then
   echo "offline (fetch failed) — continuing with the current checkout"
 fi
 
-if [ "$new_sha" != "$old_sha" ]; then
+if [ "$rollback" != 1 ] && [ "$new_sha" != "$old_sha" ]; then
   echo "updating $old_sha -> $new_sha"
   git reset --hard --quiet "$new_sha"
   # The new commit may have changed this very script: run its version,
@@ -69,12 +89,13 @@ fi
 log_result() {
   # One JSON line per meaningful run, appended locally. Timestamps UTC.
   ACTION="$action" SHA="$new_sha" TESTS="$tests" ERR="$error" \
-    STARTED="$STARTED_MS" node -e '
+    RESTORED="$restored" STARTED="$STARTED_MS" node -e '
     const e=process.env;
     console.log(JSON.stringify({ts:new Date().toISOString(),
       sha:e.SHA,action:e.ACTION,tests:e.TESTS,
       duration_s:Math.round((Date.now()-Number(e.STARTED))/1000),
-      ...(e.ERR?{error:e.ERR}:{})}))' >>"$LOG_FILE"
+      ...(e.ERR?{error:e.ERR}:{}),
+      ...(e.RESTORED?{restored:e.RESTORED}:{})}))' >>"$LOG_FILE"
 }
 
 fail() {
@@ -84,14 +105,36 @@ fail() {
   exit 1
 }
 
-if [ "$new_sha" != "$old_sha" ]; then
-  npm ci --silent --no-audit --no-fund || fail "npm ci failed"
+restore_last_good() {
+  # The replan timer compiles next week's schedule from this checkout,
+  # so a failing update must not stay on disk: put the last-good sha
+  # (and its node_modules) back. Best effort — a restore that itself
+  # fails is logged so the operator knows the tree needs a hand.
+  if [ "$new_sha" = "$old_sha" ]; then
+    return 0 # rollback mode, or nothing moved — nothing to restore
+  fi
+  echo "restoring last-good $old_sha"
+  if git reset --hard --quiet "$old_sha" &&
+    npm ci --silent --no-audit --no-fund; then
+    restored="$old_sha"
+  else
+    restored="failed"
+    echo "WARNING: could not restore $old_sha — fix the checkout by hand" >&2
+  fi
+}
+
+if [ "$rollback" = 1 ] || [ "$new_sha" != "$old_sha" ]; then
+  if ! npm ci --silent --no-audit --no-fund; then
+    restore_last_good
+    fail "npm ci failed"
+  fi
   if npm test >/tmp/moviesaboard-test.log 2>&1; then
     tests="pass"
   else
     tests="fail"
     action="test-failed"
     tail -20 /tmp/moviesaboard-test.log
+    restore_last_good
     fail "tests failed on $new_sha — not deploying"
   fi
 
@@ -101,7 +144,11 @@ if [ "$new_sha" != "$old_sha" ]; then
   cp node_modules/hls.js/dist/hls.min.js "$PUBLIC_DIR/vendor/hls.min.js"
 
   if node scripts/station-compile.js --config "$CONFIG"; then
-    action="deployed"
+    if [ "$rollback" = 1 ]; then
+      action="rollback"
+    else
+      action="deployed"
+    fi
   else
     fail "station-compile failed on $new_sha"
   fi

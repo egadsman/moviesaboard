@@ -13,8 +13,10 @@ pieces from this repo:
   suite on the host's own hardware, deploys only when tests pass, and
   appends one JSON line per run to a local log
   (`MOVIESABOARD_LOG`, default `~/moviesaboard-autodeploy.jsonl`).
-  Nothing is pushed anywhere; a failing suite leaves the last-good
-  station airing and the failure in the log.
+  Nothing is pushed anywhere; a failing suite blocks the deploy, puts
+  the checkout (and its `node_modules`) back on the last-good sha so
+  the replan timer never compiles from an untested tree, and leaves
+  the failure in the log.
 
 Offline is a first-class state: a failed fetch degrades to the
 staleness check, so the weekly replan works with no network at all.
@@ -67,16 +69,25 @@ sudo systemctl start moviesaboard-autodeploy   # or run the script directly
 tail ~/moviesaboard-autodeploy.jsonl           # deployed / test-failed / …
 ```
 
-GitHub CI runs the same tests on every push and pull request; the
-host's run is the gate for what actually airs on that host.
+GitHub CI runs the same tests on every push to `main` and on every
+pull request; the host's run is the gate for what actually airs on
+that host.
 
 ## Rollback
 
-Stop, pin, redeploy:
+Pin the checkout by hand, then run the script in rollback mode:
 
 ```sh
 git -C ~/git/moviesaboard reset --hard <old-sha>
 MOVIESABOARD_PREV_SHA=rollback ~/git/moviesaboard/scripts/station/autodeploy.sh
 ```
 
-(The next manual update returns to `origin/main`.)
+`MOVIESABOARD_PREV_SHA=rollback` makes the script skip the fetch and
+the reset to `origin/main` and take the pinned `HEAD` as the deploy
+target: it runs `npm ci` and the full test suite on it and deploys
+only on a pass, logged as `"action":"rollback"`. If the suite fails
+on the pinned sha, nothing is deployed and the checkout stays pinned
+— pin a different sha, or `git reset --hard origin/main` to return
+to the tip.
+
+(The next plain update run fetches and returns to `origin/main`.)
