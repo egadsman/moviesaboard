@@ -1,6 +1,6 @@
 // Weekly programming planner: turns the content library plus station
 // config into one week of per-channel programming (the in-memory form of
-// programming.yaml, docs/contracts.md section 2). Pure and deterministic:
+// programming.json, docs/contracts.md section 2). Pure and deterministic:
 // no I/O, no clock reads — the caller supplies the library, the parsed
 // station config, rotation cursors from last week, and the epoch ms of
 // Monday 00:00 in the station timezone.
@@ -267,14 +267,14 @@ function planMarathon({ zone, dayStarts, dayDates, names, bySeries, state }) {
  *
  * @param {object} args
  * @param {Array<object>} args.library  library.json entries.
- * @param {object} args.config  Parsed station.yaml: station.timezone,
+ * @param {object} args.config  Parsed station.config.json: station.timezone,
  *   channels [{ num, name, role }], planner { movie_break_minutes,
  *   grid_minutes }.
  * @param {object} [args.cursors]  Last week's rotation state:
  *   { movies_index, marathon_index, series: { name: index } }.
  * @param {number} args.weekStartMs  Epoch ms of Monday 00:00 in the
  *   station timezone (see weekStart in time.js).
- * @returns {{ programming: object, cursors: object }}  programming.yaml
+ * @returns {{ programming: object, cursors: object }}  programming.json
  *   content (vote channels omitted) plus cursors advanced so the NEXT
  *   week continues where this one ended.
  */

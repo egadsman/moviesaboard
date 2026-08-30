@@ -4,10 +4,13 @@
 schedule automatically, watch in any browser: a channel guide, a clock, and
 viewer voting.
 
-> **Status: alpha (Phase 1 — core + viewer + demo).** The pure scheduling
-> core, the web viewer, and a self-contained demo station work today (see
-> Quickstart). The station daemon, real media sources, and deployment
-> arrive phase by phase — see the [roadmap](docs/ROADMAP.md). The
+> **Status: alpha.** Working today (see Quickstart): the pure scheduling
+> core, the web viewer with join-in-progress playback, the fixture-built
+> demo station, the Docker Compose deployment (self-replanning; votes
+> recorded in memory), and zero-re-encode import of an already-encoded
+> library (`scripts/import.js`). Not yet: the encoder that turns your
+> own media into HLS, `station.yaml` config, and durable votes that put
+> the winner on air — see the [roadmap](docs/ROADMAP.md). The
 > [data contracts](docs/contracts.md) are settled.
 
 ## Quickstart
@@ -37,6 +40,12 @@ Then open <http://localhost:8080/>. See
 [docs/deploy-docker.md](docs/deploy-docker.md) for configuration, TLS,
 and pointing the station at an existing library.
 
+Either way, the station listens on all interfaces with no
+authentication — anyone on your network can watch and vote, which on a
+trusted LAN is the point. On an untrusted network, firewall the port
+(the demo server takes no bind address) or publish the Docker port on
+localhost only: `MOVIESABOARD_HTTP_PORT=127.0.0.1:8080` in `.env`.
+
 ## How it works
 
 No transcoding at watch time, no player accounts, no "resume watching."
@@ -50,16 +59,17 @@ media sources (directory scan · Jellyfin)
         │  encode once → static HLS
         ▼
   library.json ──► planner / compiler ──► schedule.json
-                        ▲                      │
-                programming.yaml               ▼
-                (your curation)      static web viewer + tiny API
-                                     (guide · player · clock · vote)
+                        │                      │
+                        ▼                      ▼
+                programming.json     static web viewer + tiny API
+                (record of the plan) (guide · player · clock · vote)
 ```
 
-Everything smart is a pure Node module; `stationd`, a small daemon, runs the
-scheduling ticks and a tiny localhost API; nginx serves the rest as static
-files. Ships both as Docker Compose and bare-metal (systemd + nginx) — same
-daemon, same config, either target.
+Everything smart is a pure Node module; a small station process (today
+the Docker entrypoint, eventually the `stationd` daemon) runs the
+scheduling ticks and a tiny internal API; nginx serves the rest as static
+files. Ships both as Docker Compose and bare-metal (systemd timer +
+nginx) — same modules, same config, either target.
 
 MoviesAboard does not depend on nginx. Any web server can air a station if
 it serves static files with the HLS MIME types (`.m3u8` as

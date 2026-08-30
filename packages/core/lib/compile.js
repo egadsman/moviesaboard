@@ -167,9 +167,9 @@ function packChannelGaps(airings, pool, bySlug) {
  * object, library manifest, station config, and vote-winner placements.
  *
  * @param {object} args
- * @param {object} args.programming parsed programming.yaml object
+ * @param {object} args.programming parsed programming.json object
  * @param {Array<object>} args.library library.json entries
- * @param {object} args.config parsed station.yaml object
+ * @param {object} args.config parsed station.config.json object
  * @param {Array<{slug: string, startMs: number}>} [args.votePlacements]
  *   vote-channel placements, merged in place of programming
  * @param {number} args.nowMs generation timestamp (caller's clock)

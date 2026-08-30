@@ -21,6 +21,12 @@ generates the synthetic demo fixtures on first boot
 (`MOVIESABOARD_DEMO=auto`) and a four-channel train-themed station is on
 the air: guide, player, full schedule, vote page.
 
+The published ports listen on all interfaces with no authentication —
+anyone who can reach the host can watch and vote. On a trusted LAN that
+is the point; on an untrusted network, firewall the ports or publish on
+localhost only by prefixing the mapping with an address: set
+`MOVIESABOARD_HTTP_PORT=127.0.0.1:8080` in `.env`.
+
 ## What runs
 
 - **station** — built from the repo Dockerfile. Imports content into

@@ -1,4 +1,4 @@
-// Data-contract version for library.json / programming.yaml / schedule.json
+// Data-contract version for library.json / programming.json / schedule.json
 // / state (docs/contracts.md). Bumped only with a documented migration path.
 // The planner stamps it into programming; the compiler refuses programming
 // whose version it does not understand.

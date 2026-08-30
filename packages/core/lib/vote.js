@@ -1,7 +1,8 @@
-// Vote tally for the vote channel (docs/contracts.md: state/ holds the open
-// ballot and vote history; stationd owns the I/O). Pure module: no clock
-// reads, no I/O — callers pass the ballot, the raw vote log, the library,
-// and a seed, and get deterministic data back.
+// Vote tally for the vote channel (docs/contracts.md: the open ballot
+// and vote history join state/ when stationd lands, and stationd will
+// own that I/O). Pure module: no clock reads, no I/O — callers pass the
+// ballot, the raw vote log, the library, and a seed, and get
+// deterministic data back.
 
 // mulberry32 PRNG — small, fast, deterministic for a given 32-bit seed.
 // Embedded locally on purpose; core modules do not import each other's

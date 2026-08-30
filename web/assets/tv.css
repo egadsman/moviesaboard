@@ -103,6 +103,15 @@ main { padding: 1.2rem; max-width: 1400px; margin: 0 auto; }
   padding: 1rem;
 }
 
+.page-foot {
+  color: var(--faint);
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 0 1rem 1.2rem;
+}
+.page-foot a { color: var(--faint); text-decoration: underline; }
+.page-foot a:hover { color: var(--dim); }
+
 /* ---------- player ---------- */
 
 .player-wrap {

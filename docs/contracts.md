@@ -19,13 +19,26 @@ everything else. One entry per title:
 Entries are indistinguishable by origin — a Jellyfin-sourced episode and a
 directory-scanned one look identical after encoding.
 
-## 2. programming.yaml
+## 2. programming.json
 
-The human- and planner-editable curation layer: per-channel weekly
-structure, curated series/feature lists, hand-placed one-offs. The weekly
-planner rewrites it; future-dated hand edits survive the rewrite. The vote
-channel never appears here — vote-winner placements are recorded in `state/`
-by stationd and merged at compile time.
+One planned week of per-channel programming, regenerated wholesale by the
+weekly planner from (library, config, cursors, week start) and written
+tmp+rename to `state/programming.json` by the station compiler:
+
+```text
+{ version, week_start,
+  channels: [{ num, role,
+    days: [{ date, slots: [{ at: "HH:MM", slug }] }] }] }
+```
+
+Today it is a record of the plan, not an input: the compiler consumes the
+freshly planned object directly, nothing reads the file back, and every
+publishing replan overwrites it — hand edits neither survive a replan nor
+reach the schedule. A run that publishes nothing (schedule still fresh
+under `--check-stale`, `--dry-run`, refused plan or compile) leaves the
+file untouched. The vote channel never appears here — vote channels
+compile from the compiler's separate vote-placements input, which stays
+empty until stationd (Phase 2) supplies vote winners.
 
 ## 3. schedule.json
 
@@ -44,9 +57,11 @@ so the last-good schedule always keeps serving.
 
 ## 4. state/
 
-Series cursors, the open ballot, vote history. Owned exclusively by
-stationd; all access goes through one small state module in core (JSON files
-today, SQLite later, without touching business logic).
+Series cursors (`cursors.json`) and the planner's `programming.json`,
+written directly by the interim station compiler today. The open ballot
+and vote history join them when stationd lands (Phase 2), which will then
+own `state/` exclusively through one small state module in core (JSON
+files first, SQLite later, without touching business logic).
 
 ## On-disk HLS layout (frozen)
 

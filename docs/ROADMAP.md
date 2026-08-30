@@ -19,13 +19,17 @@ page). Demo: `npm run demo` generates color-bar/tone fixture clips with
 ffmpeg, compiles a schedule, serves it statically — clone → see TV, no
 daemon required.
 
-## Phase 2 — stationd + deploy (next)
+## Phase 2 — stationd + deploy (in progress)
 
-Docker Compose landed early — [deploy-docker.md](deploy-docker.md) is the
-blessed deployment. Still to come: the `stationd` daemon (scheduling ticks,
-`POST /api/vote`, `GET /api/now`), the `moviesaboard` CLI, systemd unit +
-nginx vhost rendering from `station.yaml`. Demo: `docker compose up` → a
-voting, self-replanning station.
+Landed early: Docker Compose ([deploy-docker.md](deploy-docker.md), the
+blessed deployment — `docker compose up` already airs a voting,
+self-replanning station), frozen-layout import (`scripts/import.js`), and
+the replan tick (in the station container, and as a bare-metal systemd
+timer — [deploy-station.md](deploy-station.md)). Still to come: the
+`stationd` daemon proper (durable vote state, `GET /api/now`, airing the
+vote winner on the Requests channel), the `moviesaboard` CLI, and
+`station.yaml` parsing + nginx vhost rendering (until then the operator
+config is `station.config.json`).
 
 ## Phase 3 — Encoder + sources
 

@@ -1,6 +1,10 @@
-# MoviesAboard station configuration — the one file an operator edits.
-# Copy to station.yaml (git-ignored) and adjust. Values shown are the
-# documented defaults unless marked otherwise.
+# MoviesAboard station configuration — Phase 2 design preview. NOT YET
+# READ BY ANY CODE: nothing in this repo parses station.yaml today (see
+# docs/ROADMAP.md). The operator config that works now is the
+# station.config.json documented at the top of
+# scripts/station-compile.js. Once support lands this becomes the one
+# file an operator edits: copy to station.yaml (git-ignored) and adjust.
+# Values shown are the documented defaults unless marked otherwise.
 
 station:
   name: "My Station" # shown in the viewer's guide and branding

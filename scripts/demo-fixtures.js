@@ -403,8 +403,8 @@ export async function generateFixtures({
 
 /**
  * Assemble `<distDir>/library.json` from the per-title meta.json files
- * (the same shape `moviesaboard import` will build in Phase 2). Returns
- * the entries, sorted by slug.
+ * (the same shape `scripts/import.js` builds from an existing content
+ * directory). Returns the entries, sorted by slug.
  */
 export async function buildLibrary({ distDir }) {
   const contentDir = path.join(distDir, "content");
