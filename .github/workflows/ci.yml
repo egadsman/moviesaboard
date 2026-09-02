@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: markdownlint
-        run: npx --yes markdownlint-cli2 "**/*.md" "#node_modules"
+        run: npx --yes markdownlint-cli2@0.23.2 "**/*.md" "#node_modules"
       - name: shellcheck
         run: |
           files=$(git ls-files '*.sh')

@@ -1,10 +1,10 @@
 # MoviesAboard weekly replan check (see docs/deploy-station.md).
-# Cheap staleness probe: recompiles the schedule only when the published
-# week is running out. Point MOVIESABOARD_CONFIG at your operator config
+# Cheap staleness probe: recompiles the schedule only on the first run
+# after the published week ends. Point MOVIESABOARD_CONFIG at your config
 # with a drop-in; set User= and the path to the account that owns the
 # checkout before installing.
 [Unit]
-Description=MOVIESABOARD replan (recompile schedule when the week runs out)
+Description=MoviesAboard replan (recompile schedule once a new week begins)
 
 [Service]
 Type=oneshot

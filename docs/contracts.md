@@ -51,7 +51,8 @@ Compiled output the viewer polls:
 ```
 
 `start`/`end` are absolute epoch milliseconds. The compiler is a
-deterministic pure function of (programming, library, cursors, clock) and
+deterministic pure function of (programming, library, config, vote
+placements, clock) and
 **refuses** invalid schedules — overlaps, unknown slugs, impossible dates —
 so the last-good schedule always keeps serving.
 
@@ -68,5 +69,6 @@ files first, SQLite later, without touching business logic).
 `content/<slug>/index.m3u8` + `seg-*.ts` + per-title `meta.json`. Slug
 conventions: `ad-*` (interstitials), `clip-*` (shorts), `name-NN`
 (episodes). Frozen so existing libraries migrate with **zero re-encoding**;
-`moviesaboard import` (Phase 2) builds `library.json` from a directory of
-existing `meta.json` files.
+`scripts/import.js` builds `library.json` from a directory of existing
+`meta.json` files today; the `moviesaboard` CLI wrapper arrives in
+Phase 2.

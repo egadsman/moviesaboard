@@ -1,5 +1,5 @@
 [Unit]
-Description=Run the MOVIESABOARD replan check every 15 minutes
+Description=Run the MoviesAboard replan check every 15 minutes
 
 [Timer]
 OnCalendar=*:0/15

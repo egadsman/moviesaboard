@@ -6,7 +6,7 @@
 #   sudo cp deploy/station/moviesaboard-autodeploy.service /etc/systemd/system/
 #   sudo systemctl daemon-reload
 [Unit]
-Description=MOVIESABOARD update cycle (fetch, test, deploy, log locally)
+Description=MoviesAboard update cycle (fetch, test, deploy, log locally)
 
 [Service]
 Type=oneshot
