@@ -5,8 +5,9 @@ anything meeting the README's server requirements) and runs two small
 pieces from this repo:
 
 - **Replan timer** — `moviesaboard-replan.timer` probes every 15 minutes
-  and recompiles the schedule only when the published week is running
-  out. This is what keeps a station airing forever untouched.
+  and recompiles the schedule on the first run after the published week
+  has ended — never while it is on the air. This is what keeps a
+  station airing forever untouched.
 - **Manual update cycle** — `scripts/station/autodeploy.sh`, run by hand
   (or via `systemctl start moviesaboard-autodeploy`) when you want the
   host to pick up new commits: it fetches `main`, runs the full test
@@ -66,8 +67,13 @@ staleness check, so the weekly replan works with no network at all.
 
 ```sh
 sudo systemctl start moviesaboard-autodeploy   # or run the script directly
-tail ~/moviesaboard-autodeploy.jsonl           # deployed / test-failed / …
+tail ~/moviesaboard-autodeploy.jsonl           # one JSON line per run
 ```
+
+Each log line's `action` is one of `fresh`, `deployed`, `test-failed`,
+`rollback`, or `replanned`; a failed update also carries a `restored`
+field — the last-good sha put back, or `failed` when even the restore
+needed a hand.
 
 GitHub CI runs the same tests on every push to `main` and on every
 pull request; the host's run is the gate for what actually airs on

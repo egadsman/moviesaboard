@@ -66,7 +66,14 @@ else
   new_sha="$(git rev-parse origin/main)"
 fi
 
-action="fresh"
+# In rollback mode start from "rollback" so a run that fails before the
+# deploy (e.g. npm ci) doesn't log a misleading "fresh"; later
+# assignments (test-failed / replanned / ...) still override.
+if [ "$rollback" = 1 ]; then
+  action="rollback"
+else
+  action="fresh"
+fi
 tests="skipped"
 error=""
 restored=""
@@ -111,7 +118,12 @@ restore_last_good() {
   # (and its node_modules) back. Best effort — a restore that itself
   # fails is logged so the operator knows the tree needs a hand.
   if [ "$new_sha" = "$old_sha" ]; then
-    return 0 # rollback mode, or nothing moved — nothing to restore
+    # Rollback mode (or nothing moved): no git reset needed — HEAD
+    # never left old_sha — but a failed `npm ci` has already deleted
+    # node_modules, and the replan timer needs a usable tree. Reinstall
+    # best-effort; the caller logs the failure either way.
+    npm ci --silent --no-audit --no-fund || true
+    return 0
   fi
   echo "restoring last-good $old_sha"
   if git reset --hard --quiet "$old_sha" &&
@@ -143,6 +155,11 @@ if [ "$rollback" = 1 ] || [ "$new_sha" != "$old_sha" ]; then
   mkdir -p "$PUBLIC_DIR/vendor"
   cp node_modules/hls.js/dist/hls.min.js "$PUBLIC_DIR/vendor/hls.min.js"
 
+  # Forced compile (no --check-stale): a mid-week deploy replans the
+  # on-air week with already-advanced cursors — a deliberate, accepted
+  # lineup shift when code changes. The --check-stale paths (the branch
+  # below, and the replan timer) must instead never churn the on-air
+  # week.
   if node scripts/station-compile.js --config "$CONFIG"; then
     if [ "$rollback" = 1 ]; then
       action="rollback"
