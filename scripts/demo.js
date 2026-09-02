@@ -27,8 +27,9 @@ const MINUTE_MS = 60000;
 
 const log = (msg) => console.log(`[demo] ${msg}`);
 
-// The demo station config — same shape as station.yaml.example, with the
-// machine's own timezone so the guide reads naturally.
+// The demo station config — the station.config.json shape documented
+// atop scripts/station-compile.js, with the machine's own timezone so
+// the guide reads naturally.
 function demoConfig() {
   return {
     station: {

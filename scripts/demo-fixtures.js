@@ -31,7 +31,7 @@ const PROFILE = "demo-360p";
 export const TITLES = [
   { slug: "sunset-express", title: "Sunset Express", kind: "movie",
     seconds: 480, bg: "smptebars", tone: 220 },
-  { slug: "iron-horse", title: "The Iron Horse", kind: "movie",
+  { slug: "iron-junction", title: "Iron Junction", kind: "movie",
     seconds: 495, bg: "testsrc2", tone: 262 },
   { slug: "midnight-local", title: "Midnight Local", kind: "movie",
     seconds: 420, bg: "smptebars", tone: 330 },

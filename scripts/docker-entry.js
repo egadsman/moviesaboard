@@ -40,7 +40,8 @@ const PORT = Number(process.env.MOVIESABOARD_PORT) || 4321;
 
 const log = (msg) => console.log(`[station] ${msg}`);
 
-// The standard lineup from station.yaml.example.
+// Default channel lineup, used when /data/station.config.json is
+// absent or omits `channels` (shape: scripts/station-compile.js).
 const DEFAULT_CHANNELS = [
   { num: 1, name: "Movies", role: "movies" },
   { num: 2, name: "Series", role: "series-grid" },
@@ -133,23 +134,53 @@ async function setupTls() {
 // Generation may run only when everything in content/ is the demo's
 // own: every entry an empty dir or a dir named by the generator's
 // TITLES list — the only dirs generateFixtures will ever wipe and
-// rebuild. Any stray file or unknown non-empty dir could be an
-// operator's content and blocks generation for good. Within that,
-// generate when the import finds no valid titles (first boot, or pure
-// debris) or when some fixture dir no longer imports (a crashed encode
-// left a partial); a healthy set — even one an operator pruned — is
-// left alone. This is what un-wedges a first boot whose encode pool
-// crashed mid-run: regeneration is idempotent per title, so the next
-// boot re-encodes just the broken dirs and converges.
+// rebuild. Any stray file, symlink, unknown non-empty dir, or entry we
+// cannot even read (EACCES from UID-mapped bind mounts or root-squash
+// NFS) could be an operator's content: each blocks generation for good,
+// with a log line saying which entry and why — never a crashed boot.
+// Within that, generate when the import finds no valid titles (first
+// boot, or pure debris) or when some fixture dir no longer imports (a
+// crashed encode left a partial); a healthy set — even one an operator
+// pruned — is left alone. This is what un-wedges a first boot whose
+// encode pool crashed mid-run: regeneration is idempotent per title, so
+// the next boot re-encodes just the broken dirs and converges.
 async function shouldGenerateDemo(contentDir) {
-  const entries = (await fs.readdir(contentDir, { withFileTypes: true }))
-    .filter((d) => !d.name.startsWith("."));
+  const blocked = (entry, why) => {
+    log(
+      `demo: not generating fixtures — ${entry} ${why}; treating ` +
+        "/data/content as operator content and leaving it alone " +
+        "(set MOVIESABOARD_DEMO=off to silence this)",
+    );
+    return false;
+  };
+  let entries;
+  try {
+    entries = (await fs.readdir(contentDir, { withFileTypes: true }))
+      .filter((d) => !d.name.startsWith("."));
+  } catch (err) {
+    return blocked(contentDir, `is unreadable (${err.code ?? err.message})`);
+  }
   const fixtureSlugs = new Set(TITLES.map((t) => t.slug));
   for (const d of entries) {
-    if (!d.isDirectory()) return false;
+    if (d.isSymbolicLink()) {
+      return blocked(d.name, "is a symlink, not a plain directory");
+    }
+    if (!d.isDirectory()) {
+      return blocked(d.name, "is a stray file, not a directory");
+    }
     if (fixtureSlugs.has(d.name)) continue;
-    const inner = await fs.readdir(path.join(contentDir, d.name));
-    if (inner.length > 0) return false;
+    let inner;
+    try {
+      inner = await fs.readdir(path.join(contentDir, d.name));
+    } catch (err) {
+      return blocked(
+        `${d.name}/`,
+        `is unreadable (${err.code ?? err.message})`,
+      );
+    }
+    if (inner.length > 0) {
+      return blocked(`${d.name}/`, "is not a demo title and not empty");
+    }
   }
   const { library } = await buildLibraryFromContent(contentDir);
   const validSlugs = new Set(library.map((e) => e.slug));

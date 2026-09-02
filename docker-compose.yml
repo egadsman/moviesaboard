@@ -16,8 +16,8 @@
 # existing frozen-layout content library is supported by making the
 # content bind source a variable whose default is the content/ dir
 # inside MOVIESABOARD_DATA — leaving it unset changes nothing, setting
-# it overlays that directory (read-write) at /data/content in both
-# containers.
+# it overlays that directory at /data/content (read-write in station,
+# read-only in web, like the rest of /data).
 
 name: moviesaboard
 

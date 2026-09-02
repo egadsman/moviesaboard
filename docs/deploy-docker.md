@@ -72,12 +72,12 @@ the demo station on port 8080.
 | `MOVIESABOARD_HTTP_PORT` | `8080` | Published HTTP port (maps to web `:80`; always on). |
 | `MOVIESABOARD_HTTPS_PORT` | `8443` | Published HTTPS port (maps to web `:443`; answers only when TLS is on). |
 | `MOVIESABOARD_DATA` | `./station-data` | Host path or named volume mounted at `/data` in both containers. |
-| `MOVIESABOARD_CONTENT` | *(empty)* | Existing frozen-layout content directory to mount at `/data/content` (read-write). Empty keeps content inside `MOVIESABOARD_DATA`. |
+| `MOVIESABOARD_CONTENT` | *(empty)* | Existing frozen-layout content directory to mount at `/data/content` (station read-write, web read-only). Empty keeps content inside `MOVIESABOARD_DATA`. |
 | `MOVIESABOARD_TLS` | `off` | `off`, `self-signed`, or `provided` — see [TLS](#tls). |
 | `STATION_NAME` | `MoviesAboard` | Station name shown in the viewer. |
 | `STATION_TZ` | *(empty)* | Station timezone (e.g. `America/Chicago`); empty uses the container's timezone. |
-| `MOVIESABOARD_DEMO` | `auto` | `auto` generates demo fixtures when `/data/content` is empty (and repairs them after a crashed encode — never beside real content); `off` never does. |
-| `MOVIESABOARD_REPLAN_MINUTES` | `5` | How often the station checks whether the published schedule has gone stale. |
+| `MOVIESABOARD_DEMO` | `auto` | `auto` generates demo fixtures when `/data/content` holds nothing beyond the demo's own titles and some are missing or broken (repairing a crashed encode — never beside real content); `off` never does. |
+| `MOVIESABOARD_REPLAN_MINUTES` | `5` | How often the station checks whether the published schedule's week has ended and the new week needs planning. |
 
 For anything the environment cannot express, the station also honors an
 optional operator config at `/data/station.config.json` — station name
@@ -137,9 +137,13 @@ vote state (with the rest of the `state/` contract) arrives with
 ## How the weekly replan works
 
 Every `MOVIESABOARD_REPLAN_MINUTES` (default 5) the station checks
-whether the published schedule has gone stale — running out of planned
-airings. When it has, the planner rewrites the coming week's programming
-from scratch and the compiler produces a fresh `schedule.json`, written
-atomically. The compiler **refuses** invalid schedules — overlaps,
-unknown slugs, impossible dates — so the last-good schedule keeps
-serving no matter what. There is nothing to cron.
+whether the published `schedule.json` is still the on-air week's (weeks
+start Monday 00:00 in the station timezone). While it is, the tick does
+nothing. On the first check after that week has ended — or when no
+schedule is published at all — the planner writes programming for the
+week containing now and the compiler produces a fresh `schedule.json`,
+written atomically. So the timer fires often, but a new schedule is
+published only once per week boundary. The compiler **refuses** invalid
+schedules — overlaps, unknown slugs, impossible dates — so the
+last-good schedule keeps serving no matter what. There is nothing to
+cron.
