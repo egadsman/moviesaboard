@@ -210,6 +210,77 @@ test("every defective library entry lands in one refusal", () => {
   );
 });
 
+test("a null library entry refuses instead of crashing bySlug", () => {
+  // Without the skip, bySlug.set(entry.slug, ...) threw a raw TypeError
+  // before the collected problems could become a CompileError.
+  assert.throws(
+    () => compileSchedule(compileInput([libEntry(), null])),
+    (err) => {
+      assert.ok(err instanceof CompileError, `expected CompileError, got ${err}`);
+      assert.ok(
+        err.problems.some((p) => p.includes("library entry 1")),
+        err.problems.join("\n  "),
+      );
+      return true;
+    },
+  );
+});
+
+test("compileSchedule refuses a non-array library", () => {
+  for (const bad of [{}, null]) {
+    assert.throws(
+      () => compileSchedule(compileInput(bad)),
+      (err) => {
+        assert.ok(
+          err instanceof CompileError,
+          `library ${String(bad)}: expected CompileError, got ${err}`,
+        );
+        assert.ok(
+          err.problems.some((p) => p.includes("library must be an array")),
+          err.problems.join("\n  "),
+        );
+        return true;
+      },
+    );
+  }
+});
+
+test("compileSchedule refuses a runtime_s longer than a week", () => {
+  // 1e308 is finite, so it passed validation, but start + 1e308 * 1000
+  // overflows to Infinity and publishes `"end": null` — the symptom the
+  // validation exists to kill.
+  assert.throws(
+    () => compileSchedule(compileInput([libEntry({ runtime_s: 1e308 })])),
+    (err) => {
+      assert.ok(err instanceof CompileError);
+      assert.deepEqual(err.problems, [
+        'library entry "m1": runtime_s must be at most 604800 (one week), ' +
+          "not 1e+308",
+      ]);
+      return true;
+    },
+  );
+});
+
+test("compileSchedule refuses duplicate slugs, one problem per duplicate", () => {
+  const library = [
+    libEntry(),
+    libEntry({ title: "M1 shadow" }),
+    libEntry({ title: "M1 shadow 2" }),
+  ];
+  assert.throws(
+    () => compileSchedule(compileInput(library)),
+    (err) => {
+      assert.ok(err instanceof CompileError);
+      assert.deepEqual(err.problems, [
+        'library entry "m1": duplicate slug',
+        'library entry "m1": duplicate slug',
+      ]);
+      return true;
+    },
+  );
+});
+
 test("control: the valid fixture library still compiles", () => {
   const schedule = compileSchedule({
     programming: fixture("programming.small.json"),

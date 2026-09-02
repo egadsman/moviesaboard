@@ -55,12 +55,21 @@ function makeAiring(entry, startMs) {
   };
 }
 
+// Longest legal runtime_s: one week (a weekly scheduler never airs a
+// single title longer than the week itself). Beyond a bound, a finite but
+// absurd runtime (say 1e308) overflows start + runtime_s * 1000 to
+// Infinity, which JSON-serializes as `"end": null` — the exact defect
+// this validation exists to refuse.
+const MAX_RUNTIME_S = 7 * 24 * 60 * 60; // 604800
+
 // Refuse defective library entries before compiling anything from them.
-// library.json is a stable boundary (docs/contracts.md section 1) that
-// other components write and self-hosters hand-edit, so every entry is
-// checked up front — a broken entry is invalid input even when nothing
-// currently airs it, and any interstitial/clip may be packed into a gap.
+// library.json is a stable boundary (docs/contracts.md section 1) rebuilt
+// on every publishing run from the per-title meta.json files — the layer
+// self-hosters hand-edit — so every entry is checked up front: a broken
+// entry is invalid input even when nothing currently airs it, and any
+// interstitial/clip may be packed into a gap.
 function validateLibrary(library, problems) {
+  const seen = new Set();
   library.forEach((entry, i) => {
     const named = typeof entry?.slug === "string" && entry.slug.length > 0;
     const where = named
@@ -68,6 +77,13 @@ function validateLibrary(library, problems) {
       : `library entry ${i}`;
     if (!named) {
       problems.push(`${where}: slug must be a non-empty string`);
+    } else if (seen.has(entry.slug)) {
+      // Silently, bySlug would keep the last duplicate while the packer
+      // pool rotated both — the one place defects could merge instead of
+      // refusing. One problem line per duplicate.
+      problems.push(`${where}: duplicate slug`);
+    } else {
+      seen.add(entry.slug);
     }
     if (typeof entry?.title !== "string" || entry.title.length === 0) {
       problems.push(`${where}: title must be a non-empty string`);
@@ -82,6 +98,11 @@ function validateLibrary(library, problems) {
           : String(entry?.runtime_s);
       problems.push(
         `${where}: runtime_s must be a finite number > 0, not ${got}`,
+      );
+    } else if (entry.runtime_s > MAX_RUNTIME_S) {
+      problems.push(
+        `${where}: runtime_s must be at most ${MAX_RUNTIME_S} (one week), ` +
+          `not ${entry.runtime_s}`,
       );
     }
   });
@@ -227,11 +248,23 @@ export function compileSchedule({
     );
   }
 
+  // A non-array library can make no schedule at all: refuse now (with the
+  // problems collected so far) instead of crashing while iterating it.
+  if (!Array.isArray(library)) {
+    problems.push(
+      `library must be an array, not ${library === null ? "null" : typeof library}`,
+    );
+    throw new CompileError(problems);
+  }
   validateLibrary(library, problems);
 
+  // Entries that are not objects with a slug are already problems above;
+  // skip them here so collection reaches the throw instead of crashing.
   const bySlug = new Map();
-  for (const entry of library) bySlug.set(entry.slug, entry);
-  const pool = library.filter((e) => PACKABLE_KINDS.has(e.kind));
+  for (const entry of library) {
+    if (typeof entry?.slug === "string") bySlug.set(entry.slug, entry);
+  }
+  const pool = library.filter((e) => PACKABLE_KINDS.has(e?.kind));
 
   // Config channels are the authoritative list; duplicate nums are a
   // defect, and unknown roles refuse rather than guess.

@@ -45,12 +45,16 @@ export function libraryEntryFromMeta({ slug, meta, encodedAtIso }) {
     );
   }
 
-  // runtime_s: current shape wins; old shape's float duration_s rounds.
+  // runtime_s: current shape wins (already a positive integer); old
+  // shape's float duration_s rounds, clamped to at least 1 second — a
+  // sub-half-second file would otherwise round to 0 and the compiler
+  // would refuse the whole library over it (scripts/demo-fixtures.js
+  // clamps the same way at encode time).
   let runtimeS;
   if (Number.isInteger(meta.runtime_s) && meta.runtime_s > 0) {
     runtimeS = meta.runtime_s;
   } else if (Number.isFinite(meta.duration_s) && meta.duration_s > 0) {
-    runtimeS = Math.round(meta.duration_s);
+    runtimeS = Math.max(1, Math.round(meta.duration_s));
   } else {
     problems.push("no positive runtime_s or duration_s");
   }

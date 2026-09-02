@@ -86,12 +86,19 @@ export async function stationCompile({ config, checkStale, dryRun, nowMs }) {
     // accepted).
     const current = await readJsonOrNull(schedulePath);
     const first = firstStartMs(current);
+    // ">=" rather than "===": after a clock step back across Monday
+    // midnight (an NTP correction), the just-published new week sits
+    // momentarily in the future — calling it stale would overwrite it
+    // with a replan of the old week and replan again after midnight
+    // (double churn, double cursor advance). A bogus far-future
+    // schedule can't occur: the compiler only publishes the week it
+    // planned.
     if (
       Number.isFinite(first) &&
-      weekStart(zone, first) === weekStart(zone, nowMs)
+      weekStart(zone, first) >= weekStart(zone, nowMs)
     ) {
       log(
-        "schedule fresh (current week, covers through " +
+        "schedule fresh (current or newer week, covers through " +
           `${new Date(lastEndMs(current)).toISOString()}) — nothing to do`,
       );
       return { action: "fresh" };

@@ -142,3 +142,44 @@ test("stale check republishes only after the new week begins", async () => {
     await fs.rm(dir, { recursive: true, force: true });
   }
 });
+
+test("clock step back across Monday midnight does not replan", async () => {
+  const { dir, config } = await makeStation();
+  try {
+    const schedulePath = path.join(config.paths.public, "schedule.json");
+    const cursorsPath = path.join(config.paths.state, "cursors.json");
+    const programmingPath = path.join(config.paths.state, "programming.json");
+
+    // Publish week 2 on the first tick after its Monday 00:00.
+    const boot = await stationCompile({
+      config,
+      checkStale: true,
+      dryRun: false,
+      nowMs: WEEK2_MS + 5 * MINUTE_MS,
+    });
+    assert.equal(boot.action, "published");
+    const published = {
+      schedule: await snapshot(schedulePath),
+      cursors: await snapshot(cursorsPath),
+      programming: await snapshot(programmingPath),
+    };
+
+    // An NTP correction steps the clock back to a few minutes BEFORE
+    // the published week's start. The published week is now the future
+    // week — but it must still count as fresh: replanning here would
+    // overwrite it with the old week (advancing cursors a second time)
+    // only to replan yet again after midnight.
+    const stepped = await stationCompile({
+      config,
+      checkStale: true,
+      dryRun: false,
+      nowMs: WEEK2_MS - 3 * MINUTE_MS,
+    });
+    assert.equal(stepped.action, "fresh");
+    assert.deepEqual(await snapshot(schedulePath), published.schedule);
+    assert.deepEqual(await snapshot(cursorsPath), published.cursors);
+    assert.deepEqual(await snapshot(programmingPath), published.programming);
+  } finally {
+    await fs.rm(dir, { recursive: true, force: true });
+  }
+});

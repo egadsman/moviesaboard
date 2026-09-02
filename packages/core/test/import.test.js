@@ -44,6 +44,14 @@ test("ad-* and clip-* slugs map to interstitial and clip", () => {
   );
 });
 
+test("sub-second legacy duration_s clamps to runtime_s 1, never 0", () => {
+  const e = libraryEntryFromMeta({
+    slug: "clip-blip",
+    meta: { duration_s: 0.4 },
+  });
+  assert.equal(e.runtime_s, 1);
+});
+
 test("plain slug is a movie; 4-digit year suffix is NOT an episode", () => {
   assert.equal(
     libraryEntryFromMeta({ slug: "voidliner", meta: { duration_s: 6000 } }).kind,
