@@ -39,6 +39,8 @@
 
   var SCHEDULE_REFRESH_MS = 60 * 1000;
   var GUIDE_RENDER_MS = 10 * 1000;
+  var DRIFT_RESYNC_MS = 10 * 1000;
+  var DRIFT_TOLERANCE_S = 4; // one HLS segment of slack
   var OFFAIR_RECHECK_MS = 30 * 1000;
   var BANNER_MS = 4000;
   var DIGIT_COMMIT_MS = 1500;
@@ -149,6 +151,25 @@
     video.src = src;
   }
 
+  /* Live TV does not pause: a phone lock, background-tab throttle,
+   * blocked autoplay, or rebuffer stall would otherwise leave this
+   * screen permanently behind the station by the length of the
+   * interruption. Whenever playback is actually running, pull it back
+   * to the station clock. */
+  function resyncPlayback() {
+    if (!playing || playing.live) return; // live: hls.js holds the edge
+    if (video.paused || video.seeking || video.readyState < 2) return;
+    var now = MAB.now();
+    if (now >= playing.end) return; // the advance timer retunes
+    var target = (now - playing.start) / 1000;
+    if (isFinite(video.duration) && video.duration > 1) {
+      target = Math.min(target, video.duration - 0.5);
+    }
+    if (Math.abs(video.currentTime - target) > DRIFT_TOLERANCE_S) {
+      try { video.currentTime = target; } catch (err) { /* ignore */ }
+    }
+  }
+
   function retuneSoon() {
     // Fatal player error: destroy and retry the channel in a few seconds.
     var num = activeNum;
@@ -169,6 +190,7 @@
       slug: airing.slug,
       start: airing.start,
       end: airing.end,
+      live: airing.live,
       src: airing.src
     };
     if (window.Hls && window.Hls.isSupported()) {
@@ -560,6 +582,10 @@
       if (playing && !hls) retuneSoon();
     });
 
+    // Resume points: playback (re)starting after a stall, tap, or
+    // unpause is when accumulated lag becomes visible — resync then.
+    video.addEventListener('playing', resyncPlayback);
+
     // Guide: click / keyboard-activate a row to tune.
     guideEl.addEventListener('click', function (e) {
       var row = e.target.closest('[data-num]');
@@ -601,7 +627,10 @@
     });
 
     document.addEventListener('visibilitychange', function () {
-      if (!document.hidden) refetch();
+      if (!document.hidden) {
+        refetch();
+        resyncPlayback();
+      }
     });
   }
 
@@ -627,6 +656,7 @@
       autoTune();
       window.setInterval(refetch, SCHEDULE_REFRESH_MS);
       window.setInterval(renderGuide, GUIDE_RENDER_MS);
+      window.setInterval(resyncPlayback, DRIFT_RESYNC_MS);
     }).catch(function () {
       showNotice('Cannot load the schedule. Retrying…', true);
       window.setTimeout(boot, 5000);
