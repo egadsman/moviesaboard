@@ -61,16 +61,21 @@ server {
     }
 
     # Server clock and the tiny station API, proxied to the station
-    # container (internal-only, never published).
+    # container (internal-only, never published). Variable + resolver:
+    # DNS at request time, so nginx starts and serves statics even while
+    # the station container is down (see default.conf.template).
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $station http://station:4321;
+
     location = /time {
-        proxy_pass http://station:4321;
+        proxy_pass $station;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     location /api/ {
-        proxy_pass http://station:4321;
+        proxy_pass $station;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;

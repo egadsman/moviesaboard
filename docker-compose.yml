@@ -21,10 +21,20 @@
 
 name: moviesaboard
 
+# Cap Docker's json-file logs: nginx logs every HLS segment fetch and
+# schedule poll to stdout, which grows without bound on the default
+# driver — enough to fill a small host's disk over months of airing.
+x-logging: &capped-logs
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   station:
     build: .
     restart: unless-stopped
+    logging: *capped-logs
     init: true # reap ffmpeg children promptly
     expose:
       - "4321"
@@ -49,6 +59,7 @@ services:
   web:
     image: nginx:alpine
     restart: unless-stopped
+    logging: *capped-logs
     depends_on:
       - station
     environment:

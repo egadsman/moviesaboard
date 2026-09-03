@@ -56,16 +56,26 @@ server {
     }
 
     # Server clock and the tiny station API, proxied to the station
-    # container (internal-only, never published).
+    # container (internal-only, never published). The variable +
+    # resolver form defers DNS to request time: a literal proxy_pass
+    # hostname is resolved at config load, so nginx would refuse to
+    # start whenever the station container is down — taking the static
+    # viewer and the last-good schedule with it. This way nginx always
+    # serves, and these two routes answer 502 while the station is down
+    # (the viewer falls back to the Date header, the vote page to its
+    # offline notice). 127.0.0.11 is Docker's embedded DNS.
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $station http://station:4321;
+
     location = /time {
-        proxy_pass http://station:4321;
+        proxy_pass $station;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     location /api/ {
-        proxy_pass http://station:4321;
+        proxy_pass $station;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
