@@ -33,10 +33,11 @@ staleness check, so the weekly replan works with no network at all.
 ## One-time host setup
 
 1. Clone the repo (public — no credentials needed) as the account that
-   will own the station:
+   will own the station, and install its dependencies:
 
    ```sh
    git clone https://github.com/egadsman/moviesaboard.git ~/git/moviesaboard
+   cd ~/git/moviesaboard && npm ci
    ```
 
 2. Write the operator config, e.g.
@@ -62,6 +63,10 @@ staleness check, so the weekly replan works with no network at all.
    sudo systemctl daemon-reload
    sudo systemctl enable --now moviesaboard-replan.timer
    ```
+
+5. Run the update cycle once (see below). It detects that the viewer is
+   not yet in the public dir and performs a full first deploy — tests,
+   viewer pages, `vendor/hls.min.js`, and the first schedule.
 
 ## Updating the station
 

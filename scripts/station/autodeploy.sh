@@ -135,7 +135,19 @@ restore_last_good() {
   fi
 }
 
-if [ "$rollback" = 1 ] || [ "$new_sha" != "$old_sha" ]; then
+# First deploy: on a fresh clone old_sha == new_sha, which would take
+# the no-op staleness branch forever and never install the viewer — the
+# public dir would serve 404 with only schedule.json in it. A missing
+# viewer forces the full deploy branch.
+first_deploy=0
+if [ ! -f "$PUBLIC_DIR/index.html" ] ||
+  [ ! -f "$PUBLIC_DIR/vendor/hls.min.js" ]; then
+  first_deploy=1
+  echo "viewer missing from $PUBLIC_DIR — running a full deploy"
+fi
+
+if [ "$rollback" = 1 ] || [ "$first_deploy" = 1 ] ||
+  [ "$new_sha" != "$old_sha" ]; then
   if ! npm ci --silent --no-audit --no-fund; then
     restore_last_good
     fail "npm ci failed"
