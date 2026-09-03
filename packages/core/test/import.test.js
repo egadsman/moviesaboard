@@ -54,7 +54,8 @@ test("sub-second legacy duration_s clamps to runtime_s 1, never 0", () => {
 
 test("plain slug is a movie; 4-digit year suffix is NOT an episode", () => {
   assert.equal(
-    libraryEntryFromMeta({ slug: "voidliner", meta: { duration_s: 6000 } }).kind,
+    libraryEntryFromMeta({ slug: "voidliner", meta: { duration_s: 6000 } })
+      .kind,
     "movie",
   );
   assert.equal(
@@ -90,6 +91,15 @@ test("explicit kind overrides the slug convention", () => {
   });
   assert.equal(e.kind, "movie");
   assert.equal(e.series, undefined);
+});
+
+test("runtime_s above one week is refused per-title, not imported", () => {
+  assert.throws(
+    () =>
+      libraryEntryFromMeta({ slug: "m-long", meta: { runtime_s: 5400000 } }),
+    (err) => err instanceof ImportError &&
+      err.problems.some((p) => p.includes("exceeds one week")),
+  );
 });
 
 test("refusals: no runtime, slug mismatch", () => {

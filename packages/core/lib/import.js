@@ -58,6 +58,16 @@ export function libraryEntryFromMeta({ slug, meta, encodedAtIso }) {
   } else {
     problems.push("no positive runtime_s or duration_s");
   }
+  // Upper bound matches the compiler's MAX_RUNTIME_S (compile.js): a
+  // title longer than the week itself is a defect (usually milliseconds
+  // pasted where seconds belong). Refusing HERE skips just this title
+  // with a reason; letting it through would make compileSchedule refuse
+  // the entire library and the station would miss its next replan.
+  if (runtimeS > 7 * 24 * 60 * 60) {
+    problems.push(
+      `runtime_s ${runtimeS} exceeds one week — milliseconds instead of seconds?`,
+    );
+  }
 
   // kind: explicit and valid wins; otherwise the slug conventions.
   let kind = KINDS.has(meta.kind) ? meta.kind : null;
