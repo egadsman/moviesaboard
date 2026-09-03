@@ -297,6 +297,11 @@ async function encodeTitle({ entry, distDir, ffmpeg, ffprobe, log }) {
     "-f", "lavfi", "-i", `${entry.bg}=size=${WIDTH}x${HEIGHT}:rate=${fps}`,
     "-f", "lavfi", "-i", `sine=frequency=${entry.tone}:sample_rate=48000`,
     "-i", cardPath,
+    // Single-threaded filtering: overlaying one static BMP gains nothing
+    // from filter threads, and ffmpeg's threaded filter graph has a race
+    // that SIGSEGVs under parallel encodes on some builds (seen on
+    // Alpine linux/arm64).
+    "-filter_threads", "1", "-filter_complex_threads", "1",
     "-filter_complex", "[0:v][2:v]overlay=(W-w)/2:(H-h)/2[v]",
     "-map", "[v]", "-map", "1:a",
     "-t", String(entry.seconds),
@@ -375,8 +380,9 @@ export async function generateFixtures({
   distDir,
   ffmpeg = DEFAULT_FFMPEG,
   ffprobe = DEFAULT_FFPROBE,
-  // Capped by CPU count: on a small VM, 4 parallel ffmpegs can starve
-  // the box hard enough that one dies with SIGSEGV.
+  // Capped by CPU count so a small VM is not oversubscribed; the
+  // SIGSEGV seen under parallel encodes was a filter-thread race, fixed
+  // at the ffmpeg args (-filter_threads 1), not by this cap.
   concurrency = Math.min(4, os.availableParallelism()),
   log = () => {},
 } = {}) {
@@ -401,7 +407,15 @@ export async function generateFixtures({
       while (next < todo.length) {
         const entry = todo[next];
         next += 1;
-        await encodeTitle({ entry, distDir, ffmpeg, ffprobe, log });
+        // One retry per title: a flaky encode (transient signal death,
+        // I/O hiccup) should cost one re-encode, not the whole boot —
+        // encodeTitle wipes its dir first, so a retry starts clean.
+        try {
+          await encodeTitle({ entry, distDir, ffmpeg, ffprobe, log });
+        } catch (err) {
+          log(`  retrying ${entry.slug} after: ${err.message.split("\n")[0]}`);
+          await encodeTitle({ entry, distDir, ffmpeg, ffprobe, log });
+        }
         built.push(entry.slug);
       }
     },
@@ -419,12 +433,16 @@ export async function generateFixtures({
 export async function buildLibrary({ distDir }) {
   const contentDir = path.join(distDir, "content");
   const entries = [];
-  for (const name of (await fs.readdir(contentDir)).sort()) {
+  const names = (await fs.readdir(contentDir, { withFileTypes: true }))
+    .filter((d) => d.isDirectory()) // skip .DS_Store and other stray files
+    .map((d) => d.name)
+    .sort();
+  for (const name of names) {
     const metaPath = path.join(contentDir, name, "meta.json");
     try {
       entries.push(JSON.parse(await fs.readFile(metaPath, "utf8")));
     } catch (err) {
-      if (err.code !== "ENOENT") throw err;
+      if (err.code !== "ENOENT" && err.code !== "ENOTDIR") throw err;
     }
   }
   entries.sort((a, b) => (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
